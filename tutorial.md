@@ -1,283 +1,377 @@
+# Tamagotchi PCB Tutorial
+
+> **Note:** Your schematic should NOT look like this at the end of the tutorial! You are required to add your own components and switch it up to personalize it :D
+
+---
+
+## Table of Contents
+
+- [Tamagotchi PCB Tutorial](#tamagotchi-pcb-tutorial)
+  - [Table of Contents](#table-of-contents)
+  - [Creating the Schematic](#creating-the-schematic)
+    - [Importing the MCU](#importing-the-mcu)
+    - [Adding the OLED Display](#adding-the-oled-display)
+    - [Adding Buttons](#adding-buttons)
+    - [Adding a Buzzer](#adding-a-buzzer)
+    - [Assigning Footprints](#assigning-footprints)
+  - [Creating the PCB](#creating-the-pcb)
+    - [Laying Out Components](#laying-out-components)
+    - [Defining the Board Outline](#defining-the-board-outline)
+  - [PCB Routing](#pcb-routing)
+    - [Placing Components](#placing-components)
+    - [Routing Traces](#routing-traces)
+    - [Stitching Vias](#stitching-vias)
+  - [Customization](#customization)
+  - [Run Design Rules Check](#run-design-rules-check)
+    - [Common DRC Errors](#common-drc-errors)
+    - [Late Additions](#late-additions)
+  - [Add Your Files to Your GitHub Repo](#add-your-files-to-your-github-repo)
+  - [Upload Your Files to GitHub](#upload-your-files-to-github)
+    - [Edit Your README](#edit-your-readme)
+  - [Getting a JLCPCB Price](#getting-a-jlcpcb-price)
+    - [Settings](#settings)
+  - [Designing the Case](#designing-the-case)
+
+---
+
 ## Creating the Schematic
 
-> Note: Your schematic should NOT look like this at the end of the tutorial! You are required to add your own components, and switch it up to personalize it :D 
+The XIAO-ESP32-C6 will be used as the MCU! This is because it's tiny and includes WiFi, Bluetooth, and built‑in battery charging, which makes it perfect for this.
 
-The XIAO-ESP32-C6 will be used as the MCU! This is because it’s tiny and  includes WiFi, Bluetooth, and built‑in battery charging, which makes it perfect for this.
+### Importing the MCU
 
-First, I imported the XIAO-ESP32-C6 from [OPL Library](https://github.com/Seeed-Studio/OPL_Kicad_Library/tree/master). Heres an [excellent tutorial](https://www.youtube.com/watch?v=lnCvyGIQong) on using it! 
+First, I imported the XIAO-ESP32-C6 from the [OPL Library](https://github.com/Seeed-Studio/OPL_Kicad_Library/tree/master). Here's an [excellent tutorial](https://www.youtube.com/watch?v=lnCvyGIQong) on using it!
 
-<!-- I will create my own video later, which may be easier to use, if trouble is reported undestanding it. I think beginners may struggle. -->
+<!-- I will create my own video later, which may be easier to use, if trouble is reported understanding it. I think beginners may struggle. -->
 
-I then click A, search for the part, and import it. 
+I then clicked **A**, searched for the part, and imported it. I ended up with this:
 
-I ended up with this!
+![Xiao](https://cdn.hackclub.com/019c53e5-ec14-7422-a389-020a03b09210/41a97672-ab63-43bd-876a-20fb04e2273d.png)
 
-<img width="790" height="500" alt="image" src="https://github.com/user-attachments/assets/41a97672-ab63-43bd-876a-20fb04e2273d" />
+Now, for this tutorial, I will create the base Tamagotchi. Spice your own Tamagotchi up more than this one! Add some flavor!
 
-Now, for this tutorial I will create the base tamagotchi. Spice your own tamagotchi up more then this one! Add some flavor!
+### Adding the OLED Display
 
-I then added the [0.96 OLED](https://www.lcsc.com/product-detail/C5248080.html) via EasyEDA to KiCAD. Follow this [guide](https://hwdocs.hackclub.dev/user-contrib-guides/easyeda2kicad/)! 
+I then added the [0.96" OLED](https://www.lcsc.com/product-detail/C5248080.html) via EasyEDA to KiCad. Follow this [guide](https://hwdocs.hackclub.dev/user-contrib-guides/easyeda2kicad/)!
 
+I connected GND to GND, SDA to SDA, and SCL to SCL.
 
-I connected GND to GND, SDA to SDA, and SCL to SCL. 
+> Normally you need pull‑up resistors on SDA and SCL, but the XIAO boards already include internal pull‑ups, so you don't need external ones here.
 
-> Normally you need pull‑up resistors on SDA and SCL, but the XIAO boards already include internal pull‑ups, so you  don’t need external ones here.
+I checked the [datasheet](https://www.lcsc.com/datasheet/C5248080.pdf) attached on the LCSC page and found that VCC should be connected to 3V3.
 
-I checked the [datasheet](https://www.lcsc.com/datasheet/C5248080.pdf) attached in the LCSC link, and found that VCC should be connected to 3v3. 
+![](https://github.com/user-attachments/assets/15b279c4-acc2-40db-b04b-2e664e778855)
 
-<img width="1008" height="54" alt="image" src="https://github.com/user-attachments/assets/15b279c4-acc2-40db-b04b-2e664e778855" />
+### Adding Buttons
 
-Since a tamagatchi has 3 buttons, I decided to add those as well!
+Since a Tamagotchi has three buttons, I decided to add those as well!
 
 For this, I decided to use an **active‑low** button layout (which is the most common approach).
 
-Each button connects one side to **GND** and the other to a **GPIO pin** with the XIAO’s **internal pull‑up** enabled.  
-This makes the pin read **HIGH** when the button is idle, and **LOW** when the button is pressed.
+Each button connects one side to **GND** and the other to a **GPIO pin** with the XIAO's **internal pull‑up** enabled. This makes the pin read **HIGH** when the button is idle, and **LOW** when the button is pressed.
 
-I also added a buzzer from [here](https://www.lcsc.com/product-detail/C49246964.html)! 
+### Adding a Buzzer
+
+I also added a buzzer from [here](https://www.lcsc.com/product-detail/C49246964.html)!
 
 The buzzer is wired with one pin to a GPIO output and the other to GND, letting the GPIO drive it with a square‑wave tone.
 
-<img width="1263" height="584" alt="image" src="https://github.com/user-attachments/assets/68f89dc9-19ea-4992-93f8-83674963e40d" />
+![](https://github.com/user-attachments/assets/68f89dc9-19ea-4992-93f8-83674963e40d)
 
-This is my final schematic! Lets make the PCB now. First, lets assign parts. Click this:
+### Assigning Footprints
 
-<img width="236" height="146" alt="image" src="https://github.com/user-attachments/assets/7fdab501-5c92-4df0-b032-ab40fdc7018a" />
+This is my final schematic! Let's make the PCB now. First, let's assign parts. Click this:
 
-and then assign the corresponding EasyEDA / OPL parts! For the buttons, import from [here](https://www.lcsc.com/product-detail/C2888493.html)!
+![](https://github.com/user-attachments/assets/7fdab501-5c92-4df0-b032-ab40fdc7018a)
 
-<img width="963" height="178" alt="image" src="https://github.com/user-attachments/assets/cbc73d30-a61e-4a5a-912f-915604c71418" />
+Then assign the corresponding EasyEDA / OPL parts! For the buttons, import from [here](https://www.lcsc.com/product-detail/C2888493.html)!
 
-Now, press this and open the PCB viewer!
+![Footprint assignment](https://github.com/user-attachments/assets/cbc73d30-a61e-4a5a-912f-915604c71418)
 
-<img width="55" height="54" alt="image" src="https://github.com/user-attachments/assets/5bbc50fa-dbe2-4ab1-b301-5c360a974529" />
+Now, press this and open the PCB viewer:
 
+![Open PCB viewer](https://github.com/user-attachments/assets/5bbc50fa-dbe2-4ab1-b301-5c360a974529)
+
+---
+
+## Creating the PCB
+
+**The maximum size of your PCB should be 100mm²!**
 
 You should see something like this:
 
-<img width="808" height="674" alt="image" src="https://github.com/user-attachments/assets/1cf53978-42d2-49b6-ab12-837e863fc6ed" />
-
-
-
-## Create a Printed Circuit Board (PCB)
+![PCB editor](https://github.com/user-attachments/assets/1cf53978-42d2-49b6-ab12-837e863fc6ed)
 
 To synchronize changes between your schematic and PCB layout in KiCad:
 
-- Press **F8**
-  *or*
+- Press **F8**, *or*
 - Click the **Update PCB from Schematic** button
 
 You can do this anytime you want to refresh the PCB with the latest schematic updates.
 
-First, create a board outline. For this tutorial, **YOU NEED TO CUSTOMIZE YOUR BOARD WITH A CUSTOM OUTLINE AND ART**
+### Laying Out Components
 
-This is done by modifying the `Edge.Cuts` layer on the right side.
+First, I laid my PCB out in a 100×100 box. I then laid out all my components:
 
-There are many ways to do this. You can either manually draw it with the given menue.
+![Component layout](https://cdn.hackclub.com/019c545b-804f-7cba-a7bb-06a9ee3376d9/image.png)
 
-I found the default outline options limiting and wanted to create something more complex.
-To do this, I:
+### Defining the Board Outline
 
-1. Took a Batman image.
+You'll notice a white outline surrounding the entire board. This is the **Edge Cuts** layer, which defines the physical boundary where the PCB will be cut.
+
+This is done by modifying the `Edge.Cuts` layer on the right side. There are many ways to do this — you can manually draw it with the given menu.
+
+I found the default outline options limiting and wanted to create something more complex. To do this, I:
+
+1. Drew out the edge cuts layer.
 2. Converted the image into a DXF file using an image-to-DXF converter.
 3. Imported the DXF file into KiCad.
-4. Created a 100x100 mm box as a reference.
+4. Created a 100×100 mm box as a reference.
 5. Used the measuring tool to determine the correct scale.
 6. Scaled the outline down so it fit within 100 mm.
 
-At the end, it may look something like this:
-
-![](/old-cdn/06ae2032f870f668a088dafecf0d36b64cacef1e_image.webp)
-
-**Make sure to always keep your board below 100x100mm!**
+---
 
 ## PCB Routing
 
-A PCB is made out of multiple layers. Our boards are “two layer” meaning that they have two layers of copper wire.
+A PCB is made up of multiple layers. Our boards are "two-layer," meaning that they have two layers of copper wire.
 
 The layers include:
 
-Top and bottom solder mask: the white ink where you can do art
+| Layer | Description |
+|-------|-------------|
+| **Top & bottom silkscreen** | The white ink layer where you can add art |
+| **Top & bottom copper** | The layers where you make your copper wires |
+| **Substrate** | The actual plastic (usually green) which makes up your board |
+| **Via** | The tunnels which connect the top and bottom copper layers |
 
-Top and bottom copper layer: the layers where you make your copper wires
+![PCB layers](https://cdn.hackclub.com/019c545f-32f8-71b8-9b46-079aee118944/c2ec73f247fdb1f466903fc86d345fe0f4b47b6f_image.webp)
 
-Substrate: The actual plastic (usually green) which makes up your board
+### Placing Components
 
-Via: the tunnels which connect the top and bottom copper layers
+Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
 
-![](/old-cdn/c2ec73f247fdb1f466903fc86d345fe0f4b47b6f_image.webp)
+- Use **R** to rotate components
+- Remember to save (**Ctrl+S** / **⌘+S**) often!
 
-Place all of your components inside the Board Outline. Move components to shorten ratlines, which are are the straight blue lines.
+### Routing Traces
 
-- You can use ‘r’ to rotate them
-- Remember to save (Control-S or  ⌘-S) often !!!!
+Now it's time to route the PCB! Hit **X** on your keyboard and click anything with a thin blue line poking out of it. It should dim the entire screen, show you which direction you need to go with a thin blue line, and highlight the destination:
 
-Now it's time to route the PCB! Hit X on your keyboard and hit anything with a thin blue line poking out of it. It should dim the entire screen, show you which direction you need to go with a thin blue line and highlight the destination:
+![Routing example](https://cdn.hackclub.com/019c5460-5bb4-737a-8875-2d15ef8f3715/image.png)
 
-![example here](/old-cdn/e56026795ef53593ec7e75e329f0bc7c9c9d71b6_image.webp)
+Join the highlighted points together. If there isn't enough space on the front side, or there is a trace already present that is blocking you, you can route on the back side by clicking **B.Cu** on the right toolbar. If you want to change sides during routing, press **V** and a via will be added, which will transfer your trace to the other side of the board.
 
-Join the highlighted points together. If there isn't enough space on the front side, or there is a trace already present that is blocking you, you can route on the back side by clicking B.Cu on the right toolbar. At the same time, if you want to change sides during routing, press V and a via shall be added, which will transfer your trace to the other side of the board. **Wires and pads of different colors (except golden) can't be connected together directly! You must via to the other side.**
+> **Important:** Wires and pads of different colors (except golden) can't be connected together directly! You must use a via to the other side.
 
-![](/old-cdn/94a3f8fd9531b47e0f5322ea7bf1c76724ad1c82_image.webp)
+![Routing complete](/old-cdn/94a3f8fd9531b47e0f5322ea7bf1c76724ad1c82_image.webp)
 
 Your routing is complete!
 
-> Tip: place everything based on what shortens the blue lines, and what makes them not cross!
+> **Tip:** Place everything based on what shortens the blue lines, and what makes them not cross!
 
-> Tip 2: Use a [ground plane](https://www.kicadtips.com/how-to/make-a-ground-plane) to help with routing and to reduce noise. Thats what the red and blue layers are for! Its not necessary, but looks nice and is easy to set up!
+> **Tip:** Use a [ground plane](https://www.kicadtips.com/how-to/make-a-ground-plane) to help with routing and to reduce noise. That's what the red and blue layers are for! It's not necessary, but looks nice and is easy to set up!
 
-![](https://files.catbox.moe/cvtxud.png)
+![Ground plane](https://cdn.hackclub.com/019c5461-63bf-785e-915e-34c92be3fb2b/image.png)
+
+### Stitching Vias
+
+I added [stitching vias](https://resources.altium.com/p/everything-you-need-know-about-stitching-vias) to the ground layer. These are small plated holes that connect the ground plane on one layer to the ground plane on another, improving shielding and reducing noise. They aren't strictly required for a simple board like this, but I included them to practice good grounding habits and to make the design a bit more robust.
+
+![Stitching vias](https://cdn.hackclub.com/019c546b-8acc-7d6c-9c2b-b1a579d315ef/image.png)
+
+---
 
 ## Customization
 
-You may have already added some text and art to customize your board. if not, you can click “F.Silkscreen” and use the text tool.
+You may have already added some text and art to customize your board like me. If not, you can click **F.Silkscreen** and use the text tool.
 
-![sample text](/old-cdn/40af4f6bb85a2aadc2e3791e28f2e6e84ed8eb56_image.webp)
+![Sample text](https://cdn.hackclub.com/019c546c-c7b1-7df9-b96b-68dae071b550/image.png)
 
-To add art, just select the “Top Silkscreen Layer” or “Bottom Silkscreen Layer” in the sidebars. Then you use the kicad image converter to add custom art.
+To add art, select the **Top Silkscreen Layer** or **Bottom Silkscreen Layer** in the sidebars, then use the KiCad image converter to add custom art.
 
-![](https://kicad-info.s3.dualstack.us-west-2.amazonaws.com/original/3X/a/3/a3b5fba9b9455697b0d861d48a028c571ec44403.png)
+![KiCad image converter](https://kicad-info.s3.dualstack.us-west-2.amazonaws.com/original/3X/a/3/a3b5fba9b9455697b0d861d48a028c571ec44403.png)
 
-Your board is now beautiful
+Your board is now beautiful! 🎨
 
-![](https://files.catbox.moe/hycsid.png)
+---
 
 ## Run Design Rules Check
 
-**DRC** stands for Design Rules Check. This runs a script which makes sure that your board has no interference errors, no components are off the board, and no wires are intersecting. It does not however confirm that your board works.
+**DRC** stands for **Design Rules Check**. This runs a check that makes sure your board has no interference errors, no components are off the board, and no wires are intersecting. It does **not**, however, confirm that your board works.
 
-![](/old-cdn/27ae0765082623ea2988bbe01ce8cb8a4012b0b8_image.webp)
+![DRC](https://cdn.hackclub.com/019c5876-0777-7c3f-9817-931007221588/27ae0765082623ea2988bbe01ce8cb8a4012b0b8_image.webp)
 
 Using the output, correct any errors. This can be confusing, so remember: you can always ask for help!
 
-Here are some common errors:
+### Common DRC Errors
 
-- Track and copper errors (clearance violations, track width, annular rings)
-- Via errors (diameter, micro vias, blind/buried vias)
-- Pad and footprint errors (pad-to-pad, hole clearances)
-- Edge and board outline errors (copper edge clearance, silkscreen issues)
-- Zone errors (copper slivers, starved thermals, unconnected items)
-- Net and connection errors (missing connections, net conflicts)
-- Courtyard errors (overlaps, missing courtyards)
+- **Track and copper errors** : clearance violations, track width, annular rings
+- **Via errors** : diameter, micro vias, blind/buried vias
+- **Pad and footprint errors** : pad-to-pad, hole clearances
+- **Edge and board outline errors** : copper edge clearance, silkscreen issues
+- **Zone errors** : copper slivers, starved thermals, unconnected items
+- **Net and connection errors** : missing connections, net conflicts
+- **Courtyard errors** : overlaps, missing courtyards
 
 Once your PCB passes the DRC, it is finished!
 
-In PCB editor click View > 3D Viewer to see your finished work!
+In the PCB editor, click **View → 3D Viewer** to see your finished work!
 
-![](https://files.catbox.moe/8a6auv.png)
+![3D Viewer](https://cdn.hackclub.com/019c5472-6d23-70be-b813-a9eb320bb4e3/image.png)
+
+### Late Additions
+
+There will be moments when you realize you want to add something after you've done most of the work. That's totally fine!
+
+Here, I decided to add battery functionality. Since the XIAO's underside pins are extremely difficult to solder, I designed the board so those pins connect to a pad instead. The battery can then plug into a set of male pins that interface with that pad. Here's what it looks like:
+
+![Battery schematic](https://cdn.hackclub.com/019c5518-d617-7c27-b74c-7047a566dc60/image.png)
+
+Here's my final schematic:
+
+![Final Schematic](https://cdn.hackclub.com/019c551a-0c44-74de-b335-e5125c46b190/image.png)
+
+Here's my final PCB:
+
+![PCB](https://cdn.hackclub.com/019c5520-3b13-777e-a4fe-af7fee4a87db/image.png)
+
+![3D Model Front](https://cdn.hackclub.com/019c5521-3bb5-7571-b746-06b7ccf2c9c5/image.png)
+
+![3D Model Back](https://cdn.hackclub.com/019c5521-e2f7-7c83-8f44-04fc46b14a6a/image.png)
+
+---
 
 ## Add Your Files to Your GitHub Repo
 
-Now it is time to order your board.
+Now it is time to order your board. Get the following files from your project:
 
-Get the following files of your project:
-
-- A screenshot of your 3d view 
-  - In PCB Editor: View → 3D Viewer → Edit → Copy 3D Image.
-- .kicad_pro (KiCad project file)
-- .kicad_sch (schematic, if you used KiCad)
-- .kicad_pcb (PCB, if you used KiCad)
-- Your Gerber files:
-  1. In your PCB editor do File → Fabrication Outputs → Gerbers (.gbr)
+- **A screenshot of your 3D view**
+  - In PCB Editor: **View → 3D Viewer → Edit → Copy 3D Image**
+- `.kicad_pro` (KiCad project file)
+- `.kicad_sch` (schematic)
+- `.kicad_pcb` (PCB layout)
+- **Your Gerber files:**
+  1. In your PCB editor: **File → Fabrication Outputs → Gerbers (.gbr)**
   2. Set an output folder (e.g., a new "Gerbers" folder)
-  3. Select necessary layers (Generally already selected)
-  4. Click Plot
-  5. Click Generate Drill Files
+  3. Select necessary layers (generally already selected)
+  4. Click **Plot**
+  5. Click **Generate Drill Files**
   6. Zip the resulting files for your manufacturer
+
+---
 
 ## Upload Your Files to GitHub
 
-Go back to the GitHub repo you created at the start.
-
-Click Add File → Upload files
-
-![](/old-cdn/470145098fd2379b9385c1f49ddf795fbadfa1a3_image.webp)
+Go back to the GitHub repo you created at the start. Click **Add File → Upload files**.
 
 Drag in your:
 
+- Screenshot of your 3D view
+- `.kicad_pro` (KiCad project file)
+- `.kicad_sch` (schematic)
+- `.kicad_pcb` (PCB layout)
+- Gerbers (zipped)
 
-- Screenshot of your 3d view 
-- .kicad_pro (KiCad project file)
-- .kicad_sch (schematic, if you used KiCad)
-- .kicad_pcb (PCB, if you used KiCad)
-- Gerbers 
+You should have downloaded all of these in the previous step.
 
-(you should have downloaded all of these before)
+Click to commit your changes.
 
-![](/old-cdn/8116375daf649aa342be5d409e010a5769f5ed81_image.webp)
+### Edit Your README
 
-You can then click to commit your changes.
+Finally, edit your README to include the submission requirements:
 
-Finally, edit your ReadME
-![](/old-cdn/383215c7b9b871788025c40fd95b2cab387938d2_image.webp)
+- A short description of what your project is
+- A couple sentences on why you made the project
+- A couple sentences on how to use your project
 
-NOTE: ALL projects you make for Blueprint must have a project photo in your ReadME.
+**Pictures of your project:**
+
+- A screenshot of a full 3D model of your project
+- A screenshot of your PCB, if you have one
+- A wiring diagram, if you're doing any wiring that isn't on a PCB
+
+**A BOM (Bill of Materials) in table format at the end of the README, with links.**
+
+> **NOTE:** ALL projects you make for Blueprint must have a project photo in your README.
+
+---
 
 ## Getting a JLCPCB Price
 
-Go to [https://jlcpcb.com/](https://jlcpcb.com/) and make an account. Then, add your Gerber file for the instant quote.
+Go to [jlcpcb.com](https://jlcpcb.com/) and make an account. Then, add your Gerber file for the instant quote.
 
-![](/old-cdn/baaa0ca887d51110c30cba9d862968acbef618f8_image.webp)
+![JLCPCB upload](https://cdn.hackclub.com/019c5535-24e8-75f6-b7c0-adec3e312dc5/baaa0ca887d51110c30cba9d862968acbef618f8_image.webp)
 
-Settings:
+### Settings
 
-You should keep the default settings for everything. The only thing you should/can change is the PCB Color. I did black as seen below:
+You should keep the default settings for everything. The only thing you should/can change is the **PCB Color**. I did black as seen below:
 
-![](/old-cdn/2b2ea8e606d05ddff382fdcc7934da4bff70615c_image.webp)
+![PCB color](https://cdn.hackclub.com/019c5535-26c4-788a-8508-d053d383fd8d/2b2ea8e606d05ddff382fdcc7934da4bff70615c_image.webp)
 
-For high-spec options, also keep the default. Do not click PCB assembly as we will give you a kit to hand-solder your board.
+For high-spec options, also keep the default. **Do not** click PCB assembly — we will give you a kit to hand-solder your board.
 
-![](/old-cdn/053061912ca84c66c46323ccef5b12cb71c7d721_image.webp)
+![High-spec options](https://cdn.hackclub.com/019c5535-28a4-787e-8bf4-ba4fcbce1653/053061912ca84c66c46323ccef5b12cb71c7d721_image.webp)
 
-Once you have successfully *Not* changed any of the settings (except the board color), on the right, change the shipping method to Global Standard Direct (or Air Registered Mail if it is cheaper), and take a screenshot (this is very important).
+Once you have successfully *not* changed any of the settings (except the board color), on the right, change the shipping method to **Global Standard Direct** (or **Air Registered Mail** if it is cheaper), and take a screenshot (this is very important).
 
-![](/old-cdn/6f538d5f301eae997544c43c1d6ce6daca01331d_image.webp)
+![Shipping](https://cdn.hackclub.com/019c5535-2ab1-7ba1-aa97-7d7a87e4203a/6f538d5f301eae997544c43c1d6ce6daca01331d_image.webp)
 
-## Submitting Your Blueprint Project to Get Funding
+---
 
-You are almost done! At this stage you should have:
+## Designing the Case
 
-- A completed board
-- A GitHub repo for your board
-- A Blueprint project for your board
-- A price estimate and screenshot for your board
+Export the PCB from KiCad into your CAD platform! For me, this is Onshape.
 
-Go back to your Blueprint project screen from before. You should edit the project so the banner is your 3D render.
+I googled and found headers! I found this from [here](https://www.3dcontentcentral.com/download-model.aspx?catalogid=171&id=1025256)!
 
-![](/old-cdn/a73a0deeb8dbf8e604f0ebfda1f95f6f6ccd6daa_image.webp)
+I then experimented with the CAD a lot. I used revolve, but it did not look nice and was hard to use. I also tried multiple placements for the battery and found it was optimal if it's placed vertically.
 
-Now, click “Ship It”
+To make these, I created a sketch by clicking the sketch button in the upper-left-hand side and made multiple shapes that include tolerance and my shell size.
 
-![](/old-cdn/6d1688e2383ca416db27b57942698e7f24a88da9_image.webp)
+![](https://cdn.hackclub.com/019c5c8f-7d48-7dc5-9f80-8dcef93f84e0/image.png)
 
-Blueprint will run some checks. If any are red, you need to fix them. (you may need to upload your project banner)
+![](https://cdn.hackclub.com/019c5985-794b-78d8-bbec-b885edabe178/image.png)
 
-![](/old-cdn/0e646bc3c854746bfd51172fa68cdba8a9df1625_image.webp)
+![](https://cdn.hackclub.com/019c5983-207f-747f-b33a-d92806aac17e/image.png)
 
-Enter the dollar amount which you previously screenshotted on JPCLCB (don’t worry, we will give you extra for any fluctuations).
+I also decided to change the PCB to add the vibration motor to the back and raise the screen!
 
-![](/old-cdn/22dfe9ac0998e14b4f9418b118f37eeee29a5561_image.webp)
+From
 
-Click “No” for 3d print
+![](https://cdn.hackclub.com/019c59d1-a434-7b99-a5bf-7d486ab388f6/image.png)
 
-![](/old-cdn/cd0755158d34ae939d044a3d350e0ca6c4cb6ea7_image.webp)
+to
 
-Upload your JLCPCB screenshot from earlier
+![](https://cdn.hackclub.com/019c59cf-3ea1-7c97-8367-5ef8e0558b2a/image.png)
 
-![](/old-cdn/0aaa8f8f94dab1567dfdaff06ca5ac755b07f131_image.webp)
+My headers overlapped with the buzzer, so I decided to reposition the buzzer to the middle of the board! The gap between the LCD and the headers should give me enough space!
 
-Check your project…. and ship!
+![example](https://cdn.hackclub.com/019c5a0c-fc35-7127-b439-55fb132f13c3/image.png)
 
-![](/old-cdn/9306e1f8bb9e33f20e757051d90f47fe1f8035e0_image.webp)
+I made the back portion with 3D-printed standoffs and added large fillets to round the edges. I made the top part and added some tolerance between the top of the plate and the bottom of the top half of the case!
 
-You may need to verify your Hack Club identity if you have not already.
+![](https://cdn.hackclub.com/019c5c85-9499-7b71-b5ed-3d3325909b62/image.png)
 
-You are done!
+I added a hole for the battery and a hole for the USB-C. Generally, there may be issues printing this, but for this small amount of bridging there shouldn't be any issues!
 
-You should wait for  a reviewer to approve your project! Once it is approved, you can complete the checkout on JLCPCB (making sure to use Global Standard Direct (or Air Registered Mail if it is cheaper), and your kit/soldering iron will be sent to you!
+![](https://cdn.hackclub.com/019c5c85-ee74-7721-ab42-03937224ebe6/image.png)
 
-While you wait….
+![](https://cdn.hackclub.com/019c5c87-d8d2-7de5-bc94-b7690c845c4c/image.png)
 
-Check out more Blueprint projects on [https://blueprint.hackclub.com/explore](https://blueprint.hackclub.com/explore)! You can also make any hardware project you want on Blueprint, and get up to $400 to make it. For future Blueprint projects, you will need to make a journal throughout your development process. Again, if you have any questions, ask in #blueprint-suppport on Slack.
+Finally, I used the section view tool to confirm that there is no overlapping:
+
+![](https://cdn.hackclub.com/019c5c89-1791-78d6-9b35-902744dcb72a/image.png)
+
+Now, my design is finished! I uploaded all necessary files to my GitHub repo.
+
+**Note: Design is an iterative process. I spent about 20 hours manually adjusting everything to look as pretty as possible! But don't worry — #fallout is here to guide you! This is a normal process and you are not alone.**
+
+I recommend **not** following the above 1:1; this was my process, and it will differ greatly from yours!
+
+I also recommend checking my [Onshape](https://cad.onshape.com/documents/fa5791d8e7f345b436054923/w/ad8e09905eb572b0a8a40e9d/e/e81f06aa82a76dd04f8e6832?renderMode=0&uiState=6990af61d8ec4667253f72ea) for inspiration! Check my feature tree and see my iterations yourself.
+
+Enjoy making :D!
+
 
 
