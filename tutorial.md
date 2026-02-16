@@ -46,7 +46,7 @@ First, I imported the XIAO-ESP32-C6 from the [OPL Library](https://github.com/Se
 
 I then clicked **A**, searched for the part, and imported it. I ended up with this:
 
-![Xiao](https://cdn.hackclub.com/019c53e5-ec14-7422-a389-020a03b09210/41a97672-ab63-43bd-876a-20fb04e2273d.png)
+![Xiao](https://cdn.hackclub.com/019c6725-d62c-77f5-beae-23fda60a21ef/image.png)
 
 Now, for this tutorial, I will create the base Tamagotchi. Spice your own Tamagotchi up more than this one! Add some flavor!
 
