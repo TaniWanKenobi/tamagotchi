@@ -21,7 +21,7 @@
   A custom PCB-based Tamagotchi virtual pet built with the XIAO-ESP32-C6!
 </p>
 
-<!-- TABLE OF CONTENTS -->
+
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -38,7 +38,6 @@
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 
 <div align="center">
@@ -51,8 +50,9 @@
 
 A custom PCB-based Tamagotchi virtual pet built with the XIAO-ESP32-C6 microcontroller, featuring a 0.96" OLED display, three buttons, and a buzzer.
 
-I made the project to have my own completely customizable tamagatchi! I also want you to customize yours however you want - check my tutorial for instructions! 
-<!-- Add a couple sentences on how to use your project -->
+I made the project to have my own completely customizable tamagatchi! I also want you to customize yours however you want - check my [tutorial](/tutorial.md) for instructions! 
+
+<!-- Will add how to use when i make the firmware lmao -->
 
 ### PCB Design
 
@@ -93,7 +93,6 @@ Here is the [Onshape link](https://cad.onshape.com/documents/fa5791d8e7f345b4360
 | | | | | | |
 | **Total** | | **$47.17** | **$3.16** | **$50.33** | |
 
-<!-- CONTACT -->
 ## Contact
 
 
