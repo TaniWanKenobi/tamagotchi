@@ -51,9 +51,6 @@ KiCad ships with a large set of schematic symbols, PCB footprints, and 3D models
 
 </details>
 
-<details>
-
-
 > **New to KiCad?** Read the official getting started guide before continuing:
 > [KiCad 9.0: Getting Started](https://docs.kicad.org/9.0/en/getting_started_in_kicad/getting_started_in_kicad.html)
 
