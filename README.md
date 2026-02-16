@@ -77,17 +77,25 @@ Here is the [Onshape link](https://cad.onshape.com/documents/fa5791d8e7f345b4360
 
 ### BOM
 
-| Component | Quantity | Link |
-|-----------|----------|------|
-| XIAO-ESP32-C6 | 1 | [Seeed Studio](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) |
-| 0.96" OLED Display | 1 | [LCSC](https://www.lcsc.com/product-detail/C5248080.html) |
-| Tactile Button | 3 | [LCSC](https://www.lcsc.com/product-detail/C2888493.html) |
-| Buzzer | 1 | [LCSC](https://www.lcsc.com/product-detail/C49246964.html) |
-|JLC PCB, 1, 2 dollers
-JLC shipping, 3 dollats
+| Component | Qty | Price | Tax (6.7%) | Total | Link |
+|-----------|-----|-------|------------|-------|------|
+| XIAO-ESP32-C6 | 1 | $5.20 | $0.35 | $5.55 | [Seeed Studio](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) |
+| Seeed Studio Shipping | 1 | $6.69 | $0.45 | $7.14 | — |
+| 0.96" OLED Display | 1 | $2.15 | $0.14 | $2.29 | [LCSC](https://www.lcsc.com/product-detail/C5248080.html) |
+| Tactile Button | 3 | $0.50 | $0.03 | $0.53 | [LCSC](https://www.lcsc.com/product-detail/C2888493.html) |
+| Buzzer | 1 | $0.54 | $0.04 | $0.58 | [LCSC](https://www.lcsc.com/product-detail/C49246964.html) |
+| Male Pin Headers (20 pcs) | 1 | $0.59 | $0.04 | $0.63 | [LCSC](https://www.lcsc.com/product-detail/C49261205.html) |
+| LCSC Shipping | 1 | $14.73 | $0.99 | $15.72 | — |
+| JLCPCB PCB | 1 | $5.40 | $0.36 | $5.76 | [JLCPCB](https://jlcpcb.com/) |
+| JLCPCB Shipping | 1 | $3.30 | $0.22 | $3.52 | — |
+| M3 8mm Screws | 1 | $2.28 | $0.15 | $2.43 | [AliExpress](https://www.aliexpress.us/item/3256809831708799.html) |
+| Brass Threaded Inserts | 1 | $5.79 | $0.39 | $6.18 | [AliExpress](https://www.aliexpress.us/item/3256806286648221.html) |
+| | | | | | |
+| **Total** | | **$47.17** | **$3.16** | **$50.33** | |
 
 <!-- CONTACT -->
 ## Contact
+
 
 Tanishq Goyal - @Tanuki - [tanishqgoyal590@gmail.com](mailto:tanishqgoyal590@gmail.com)
 
