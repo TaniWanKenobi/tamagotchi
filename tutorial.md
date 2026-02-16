@@ -8,6 +8,7 @@
 
 - [Tamagotchi PCB Tutorial](#tamagotchi-pcb-tutorial)
   - [Table of Contents](#table-of-contents)
+  - [Installing KiCad](#installing-kicad)
   - [Creating the Schematic](#creating-the-schematic)
     - [Importing the MCU](#importing-the-mcu)
     - [Adding the OLED Display](#adding-the-oled-display)
@@ -20,7 +21,6 @@
   - [PCB Routing](#pcb-routing)
     - [Placing Components](#placing-components)
     - [Routing Traces](#routing-traces)
-    - [Stitching Vias](#stitching-vias)
   - [Customization](#customization)
   - [Run Design Rules Check](#run-design-rules-check)
     - [Common DRC Errors](#common-drc-errors)
@@ -34,9 +34,61 @@
 
 ---
 
+## Installing KiCad
+
+Download KiCad from the official site: **[https://www.kicad.org/download/](https://www.kicad.org/download/)**
+
+1. Go to the download page and select your operating system (Windows, macOS, or Linux).
+2. Download the latest **stable release** (KiCad 9.x).
+3. Run the installer and follow the on-screen instructions (the defaults are fine).
+4. When prompted, make sure to **install the default libraries** (they're selected by default).
+5. Launch KiCad and create a new project (**File → New Project** or **Ctrl+N**).
+
+<details>
+<summary>What are the default libraries?</summary>
+
+KiCad ships with a large set of schematic symbols, PCB footprints, and 3D models. These cover most common components (resistors, capacitors, connectors, etc.) so you don't have to create them from scratch. You'll still need to import specialty parts (like the XIAO or OLED), but the defaults cover the basics.
+
+</details>
+
+<details>
+
+
+> **New to KiCad?** Read the official getting started guide before continuing:
+> [KiCad 9.0: Getting Started](https://docs.kicad.org/9.0/en/getting_started_in_kicad/getting_started_in_kicad.html)
+
+---
+
 ## Creating the Schematic
 
 The XIAO-ESP32-C6 will be used as the MCU! This is because it's tiny and includes WiFi, Bluetooth, and built‑in battery charging, which makes it perfect for this.
+
+<details>
+<summary>What is an MCU?</summary>
+
+MCU stands for **Microcontroller Unit**, the tiny computer (brain) of your project. It runs your code and controls all the other components (display, buttons, buzzer, etc.). The XIAO-ESP32-C6 is the MCU we're using here.
+
+</details>
+
+<details>
+<summary>Useful schematic editor keybinds</summary>
+
+| Key | Action |
+|-----|--------|
+| **A** | Add a symbol (component) |
+| **W** | Draw a wire |
+| **P** | Add a power symbol (VCC, GND, 3V3, etc.) |
+| **L** | Add a net label |
+| **M** | Move a component |
+| **R** | Rotate a component |
+| **G** | Grab/drag a component (keeps wires attached) |
+| **E** | Edit component properties |
+| **C** | Copy a component |
+| **Delete** | Delete selected item |
+| **Ctrl+Z** | Undo |
+| **Ctrl+S** | Save |
+
+</details>
 
 ### Importing the MCU
 
@@ -44,7 +96,7 @@ First, I imported the XIAO-ESP32-C6 from the [OPL Library](https://github.com/Se
 
 <!-- I will create my own video later, which may be easier to use, if trouble is reported understanding it. I think beginners may struggle. -->
 
-I then clicked **A**, searched for the part, and imported it. I ended up with this:
+I then clicked **A** (Add Symbol), searched for the part, and imported it. I ended up with this:
 
 ![Xiao](https://cdn.hackclub.com/019c6725-d62c-77f5-beae-23fda60a21ef/image.png)
 
@@ -54,9 +106,25 @@ Now, for this tutorial, I will create the base Tamagotchi. Spice your own Tamago
 
 I then added the [0.96" OLED](https://www.lcsc.com/product-detail/C5248080.html) via EasyEDA to KiCad. Follow this [guide](https://hwdocs.hackclub.dev/user-contrib-guides/easyeda2kicad/)!
 
-I connected GND to GND, SDA to SDA, and SCL to SCL.
+I connected GND to GND, SDA to SDA, and SCL to SCL. Use **W** to draw wires between pins.
 
-> Normally you need pull‑up resistors on SDA and SCL, but the XIAO boards already include internal pull‑ups, so you don't need external ones here.
+<details>
+<summary>What are SDA, SCL, and GND?</summary>
+
+- **GND** = Ground, the common reference point for all electrical signals.
+- **SDA** = Serial Data, the line that carries data back and forth over I2C.
+- **SCL** = Serial Clock, the line that provides the timing signal for I2C communication.
+
+I2C is a protocol that lets multiple devices talk over just two wires (SDA + SCL).
+
+</details>
+
+<details>
+<summary>Do I need pull-up resistors on SDA and SCL?</summary>
+
+Normally yes. I2C requires pull‑up resistors on SDA and SCL; however, the XIAO boards already include internal pull‑ups, so you don't need external ones here.
+
+</details>
 
 I checked the [datasheet](https://www.lcsc.com/datasheet/C5248080.pdf) attached on the LCSC page and found that VCC should be connected to 3V3.
 
@@ -69,6 +137,20 @@ Since a Tamagotchi has three buttons, I decided to add those as well!
 For this, I decided to use an **active‑low** button layout (which is the most common approach).
 
 Each button connects one side to **GND** and the other to a **GPIO pin** with the XIAO's **internal pull‑up** enabled. This makes the pin read **HIGH** when the button is idle, and **LOW** when the button is pressed.
+
+<details>
+<summary>What does "active-low" mean?</summary>
+
+"Active-low" means the button is considered "pressed" when the signal goes LOW (0V / GND). When the button is not pressed, the internal pull-up resistor keeps the pin HIGH (3.3V). This is the most common button wiring approach because it's simple: you only need the button and a ground connection, no extra resistors.
+
+</details>
+
+<details>
+<summary>What is a GPIO pin?</summary>
+
+GPIO stands for **General Purpose Input/Output**. These are the programmable pins on your microcontroller that can be configured as either inputs (to read sensors/buttons) or outputs (to drive LEDs/buzzers). On the XIAO, pins like D0–D10 are GPIOs.
+
+</details>
 
 ### Adding a Buzzer
 
@@ -119,7 +201,7 @@ First, I laid my PCB out in a 100×100 box. I then laid out all my components:
 
 You'll notice a white outline surrounding the entire board. This is the **Edge Cuts** layer, which defines the physical boundary where the PCB will be cut.
 
-This is done by modifying the `Edge.Cuts` layer on the right side. There are many ways to do this — you can manually draw it with the given menu.
+This is done by modifying the `Edge.Cuts` layer on the right side. There are many ways to do this, such as manually drawing it with the given menu.
 
 I found the default outline options limiting and wanted to create something more complex. To do this, I:
 
@@ -136,7 +218,8 @@ I found the default outline options limiting and wanted to create something more
 
 A PCB is made up of multiple layers. Our boards are "two-layer," meaning that they have two layers of copper wire.
 
-The layers include:
+<details>
+<summary>What are the PCB layers?</summary>
 
 | Layer | Description |
 |-------|-------------|
@@ -147,12 +230,23 @@ The layers include:
 
 ![PCB layers](https://cdn.hackclub.com/019c545f-32f8-71b8-9b46-079aee118944/c2ec73f247fdb1f466903fc86d345fe0f4b47b6f_image.webp)
 
+</details>
+
 ### Placing Components
 
 Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
 
-- Use **R** to rotate components
-- Remember to save (**Ctrl+S** / **⌘+S**) often!
+- **M**: Move a component
+- **R**: Rotate a component
+- **F**: Flip a component to the other side of the board
+- **Ctrl+S** / **⌘+S**: Save (do this often!)
+
+<details>
+<summary>What are ratlines?</summary>
+
+Ratlines (also called "ratsnest lines") are the thin straight lines that show unrouted connections between pads. They indicate which pads need to be connected with copper traces. Your goal is to arrange components so these lines are as short as possible and don't cross each other, which makes routing much easier.
+
+</details>
 
 ### Routing Traces
 
@@ -160,25 +254,39 @@ Now it's time to route the PCB! Hit **X** on your keyboard and click anything wi
 
 ![Routing example](https://cdn.hackclub.com/019c5460-5bb4-737a-8875-2d15ef8f3715/image.png)
 
+**Key routing shortcuts:**
+
+- **X**: Start routing a trace
+- **V**: Add a via (switch trace to the other side of the board mid-route)
+- **Backspace**: Delete the last trace segment while routing
+- **Esc**: Cancel the current route
+- **D**: Drag a trace (reposition it without breaking connections)
+- **U**: Select the entire trace from the point you click
+
 Join the highlighted points together. If there isn't enough space on the front side, or there is a trace already present that is blocking you, you can route on the back side by clicking **B.Cu** on the right toolbar. If you want to change sides during routing, press **V** and a via will be added, which will transfer your trace to the other side of the board.
 
 > **Important:** Wires and pads of different colors (except golden) can't be connected together directly! You must use a via to the other side.
 
-![Routing complete](/old-cdn/94a3f8fd9531b47e0f5322ea7bf1c76724ad1c82_image.webp)
+<details>
+<summary>What is a via?</summary>
+
+A via is a small plated hole that connects a copper trace on one layer of the board to a trace on another layer. Think of it as a tiny tunnel through the PCB. You use them when you can't route a trace on one side because another trace is in the way. Press **V** while routing to drop a via and continue the trace on the other side.
+
+</details>
 
 Your routing is complete!
+
+
+
+![Ground plane](https://cdn.hackclub.com/019c5461-63bf-785e-915e-34c92be3fb2b/image.png)
 
 > **Tip:** Place everything based on what shortens the blue lines, and what makes them not cross!
 
 > **Tip:** Use a [ground plane](https://www.kicadtips.com/how-to/make-a-ground-plane) to help with routing and to reduce noise. That's what the red and blue layers are for! It's not necessary, but looks nice and is easy to set up!
 
-![Ground plane](https://cdn.hackclub.com/019c5461-63bf-785e-915e-34c92be3fb2b/image.png)
-
-### Stitching Vias
-
-I added [stitching vias](https://resources.altium.com/p/everything-you-need-know-about-stitching-vias) to the ground layer. These are small plated holes that connect the ground plane on one layer to the ground plane on another, improving shielding and reducing noise. They aren't strictly required for a simple board like this, but I included them to practice good grounding habits and to make the design a bit more robust.
-
-![Stitching vias](https://cdn.hackclub.com/019c546b-8acc-7d6c-9c2b-b1a579d315ef/image.png)
+> **Note:** You may notice [stitching vias](https://resources.altium.com/p/everything-you-need-know-about-stitching-vias) in my board (the small holes scattered across the ground plane). **You do NOT need to add these.** They are completely optional and unnecessary for a board like this. I only added them for fun.
+>
+> ![Stitching vias](https://cdn.hackclub.com/019c546b-8acc-7d6c-9c2b-b1a579d315ef/image.png)
 
 ---
 
@@ -192,7 +300,7 @@ To add art, select the **Top Silkscreen Layer** or **Bottom Silkscreen Layer** i
 
 ![KiCad image converter](https://kicad-info.s3.dualstack.us-west-2.amazonaws.com/original/3X/a/3/a3b5fba9b9455697b0d861d48a028c571ec44403.png)
 
-Your board is now beautiful! 🎨
+Your board is now beautiful! 
 
 ---
 
@@ -204,7 +312,8 @@ Your board is now beautiful! 🎨
 
 Using the output, correct any errors. This can be confusing, so remember: you can always ask for help!
 
-### Common DRC Errors
+<details>
+<summary>What are common DRC errors?</summary>
 
 - **Track and copper errors** : clearance violations, track width, annular rings
 - **Via errors** : diameter, micro vias, blind/buried vias
@@ -213,6 +322,8 @@ Using the output, correct any errors. This can be confusing, so remember: you ca
 - **Zone errors** : copper slivers, starved thermals, unconnected items
 - **Net and connection errors** : missing connections, net conflicts
 - **Courtyard errors** : overlaps, missing courtyards
+
+</details>
 
 Once your PCB passes the DRC, it is finished!
 
@@ -251,13 +362,21 @@ Now it is time to order your board. Get the following files from your project:
 - `.kicad_pro` (KiCad project file)
 - `.kicad_sch` (schematic)
 - `.kicad_pcb` (PCB layout)
-- **Your Gerber files:**
-  1. In your PCB editor: **File → Fabrication Outputs → Gerbers (.gbr)**
-  2. Set an output folder (e.g., a new "Gerbers" folder)
-  3. Select necessary layers (generally already selected)
-  4. Click **Plot**
-  5. Click **Generate Drill Files**
-  6. Zip the resulting files for your manufacturer
+- **Your Gerber files** (see below)
+
+<details>
+<summary>How do I export Gerber files?</summary>
+
+1. In your PCB editor: **File → Fabrication Outputs → Gerbers (.gbr)**
+2. Set an output folder (e.g., a new "Gerbers" folder)
+3. Select necessary layers (generally already selected)
+4. Click **Plot**
+5. Click **Generate Drill Files**
+6. Zip the resulting files for your manufacturer
+
+Gerber files are the industry-standard format that PCB manufacturers use to fabricate your board. They contain the copper layers, silkscreen, solder mask, drill locations, and board outline.
+
+</details>
 
 ---
 
@@ -309,7 +428,7 @@ You should keep the default settings for everything. The only thing you should/c
 
 ![PCB color](https://cdn.hackclub.com/019c5535-26c4-788a-8508-d053d383fd8d/2b2ea8e606d05ddff382fdcc7934da4bff70615c_image.webp)
 
-For high-spec options, also keep the default. **Do not** click PCB assembly — we will give you a kit to hand-solder your board.
+For high-spec options, also keep the default. **Do not** click PCB assembly. We will give you a kit to hand-solder your board.
 
 ![High-spec options](https://cdn.hackclub.com/019c5535-28a4-787e-8bf4-ba4fcbce1653/053061912ca84c66c46323ccef5b12cb71c7d721_image.webp)
 
@@ -365,7 +484,7 @@ Finally, I used the section view tool to confirm that there is no overlapping:
 
 Now, my design is finished! I uploaded all necessary files to my GitHub repo.
 
-**Note: Design is an iterative process. I spent about 20 hours manually adjusting everything to look as pretty as possible! But don't worry — #fallout is here to guide you! This is a normal process and you are not alone.**
+**Note: Design is an iterative process. I spent about 20 hours manually adjusting everything to look as pretty as possible! But don't worry, #fallout is here to guide you! This is a normal process and you are not alone.**
 
 I recommend **not** following the above 1:1; this was my process, and it will differ greatly from yours!
 
