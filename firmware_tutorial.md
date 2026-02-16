@@ -8,7 +8,7 @@ First, install the [Arduino IDE](https://www.arduino.cc/en/software/).
 
 ## Step 1: Install the ESP32 Board Package
 
-The Arduino IDE doesn't know about ESP32 chips by default — we need to tell it where to find the board definitions.
+The Arduino IDE doesn't know about ESP32 chips by default, so we need to tell it where to find the board definitions.
 
 1. Open the Arduino IDE.
 2. Go to **File > Preferences** (or **Arduino IDE > Settings** on macOS).
@@ -31,7 +31,7 @@ The Arduino IDE doesn't know about ESP32 chips by default — we need to tell it
    > **Important:** Ensure you are using version **3.0.0 or later**, which supports the C6.
 5. Wait for the installation to finish.
 
-> **What gets installed?** The board package includes the [RISC-V](https://en.wikipedia.org/wiki/RISC-V) cross-compiler toolchain, the ESP-IDF framework libraries, and upload tools — everything needed to turn your code into firmware the chip can run.
+> **What gets installed?** The board package includes the [RISC-V](https://en.wikipedia.org/wiki/RISC-V) cross-compiler toolchain, the ESP-IDF framework libraries, and upload tools. In short, everything needed to turn your code into firmware the chip can run.
 
 ## Step 3: Select the Board and Port
 
@@ -51,7 +51,7 @@ Create a new Arduino sketch: **File > New Sketch**, then save it as `Tamagotchi_
 
 ## Step 5: Define the Pet Model
 
-This is the heart of the system — a [`struct`](https://cplusplus.com/doc/tutorial/structures/) that bundles all of the pet's stats into a single data type.
+This is the heart of the system: a [`struct`](https://cplusplus.com/doc/tutorial/structures/) that bundles all of the pet's stats into a single data type.
 
 ```cpp
 struct Pet {
@@ -64,11 +64,11 @@ struct Pet {
 
 **Line-by-line breakdown:**
 
-- `struct Pet { ... };` — Defines a new data type called `Pet`. A struct is like a blueprint: it describes *what data* a pet holds, but doesn't create one yet.
-- `int hunger;` — An integer from 0–100. We chose `int` because the values are small whole numbers.
-- `unsigned long age;` — We use [`unsigned long`](https://docs.arduino.cc/language-reference/en/variables/data-types/unsignedLong/) (0 to 4,294,967,295) because time values from `millis()` can get very large and are never negative.
+- `struct Pet { ... };` - Defines a new data type called `Pet`. A struct is like a blueprint: it describes *what data* a pet holds, but doesn't create one yet.
+- `int hunger;` - An integer from 0 to 100. We chose `int` because the values are small whole numbers.
+- `unsigned long age;` - We use [`unsigned long`](https://docs.arduino.cc/language-reference/en/variables/data-types/unsignedLong/) (0 to 4,294,967,295) because time values from `millis()` can get very large and are never negative.
 
-Now create a global instance — this is the **actual pet** that lives in memory:
+Now create a global instance. This is the **actual pet** that lives in memory:
 
 ```cpp
 Pet pet;
@@ -78,7 +78,7 @@ Pet pet;
 
 ## Step 6: Define UI States ([State Machine](https://en.wikipedia.org/wiki/Finite-state_machine))
 
-Instead of scattering `if/else` checks throughout `loop()`, we define **named states** that the program can be in. This is called a **finite state machine** — the program is always in exactly one state at a time.
+Instead of scattering `if/else` checks throughout `loop()`, we define **named states** that the program can be in. This is called a **finite state machine**: the program is always in exactly one state at a time.
 
 ```cpp
 enum Screen {
@@ -93,8 +93,8 @@ Screen currentScreen = SCREEN_MAIN;
 
 **Line-by-line breakdown:**
 
-- `enum Screen { ... };` — An [`enum`](https://cplusplus.com/doc/tutorial/other_data_types/) (enumeration) assigns human-readable names to integer constants. Under the hood, `SCREEN_MAIN` = 0, `SCREEN_FEED` = 1, etc. — but we never need to know that.
-- `Screen currentScreen = SCREEN_MAIN;` — This variable tracks which screen we're on right now. The program starts on the main screen.
+- `enum Screen { ... };` - An [`enum`](https://cplusplus.com/doc/tutorial/other_data_types/) (enumeration) assigns human-readable names to integer constants. Under the hood, `SCREEN_MAIN` = 0, `SCREEN_FEED` = 1, etc., but we never need to know that.
+- `Screen currentScreen = SCREEN_MAIN;` - This variable tracks which screen we're on right now. The program starts on the main screen.
 
 > **Why use a state machine?** Without it, you end up with deeply nested `if` statements that are hard to read and debug. A state machine makes the logic predictable: *"When I'm in state X and event Y happens, go to state Z."* This is the same pattern used in [real embedded systems](https://en.wikipedia.org/wiki/UML_state_machine), game engines, and protocol parsers.
 
@@ -117,15 +117,15 @@ void setup() {
 
 **Line-by-line breakdown:**
 
-- `Serial.begin(115200);` — Opens the [serial port](https://docs.arduino.cc/language-reference/en/functions/communication/serial/begin/) at **115200 baud** (bits per second). This is the communication speed between the board and your computer. Both sides must agree on the same baud rate or you'll see garbled text.
-- `pet.hunger = 80;` — The dot (`.`) operator accesses a field inside the struct. We start the pet at 80/100 for each stat — healthy but not perfect, so there's room to improve or decay.
-- `Serial.println(...)` — Prints a line of text to the **Serial Monitor** (the console window in Arduino IDE). This is our temporary "display" until we connect an OLED screen.
+- `Serial.begin(115200);` - Opens the [serial port](https://docs.arduino.cc/language-reference/en/functions/communication/serial/begin/) at **115200 baud** (bits per second). This is the communication speed between the board and your computer. Both sides must agree on the same baud rate or you'll see garbled text.
+- `pet.hunger = 80;` - The dot (`.`) operator accesses a field inside the struct. We start the pet at 80/100 for each stat, healthy but not perfect, so there's room to improve or decay.
+- `Serial.println(...)` - Prints a line of text to the **Serial Monitor** (the console window in Arduino IDE). This is our temporary "display" until we connect an OLED screen.
 
 > Since there is no OLED yet, [`Serial`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/) is our display. Open it with **Tools > Serial Monitor** and set the baud rate to **115200**.
 
 ## Step 8: Game Update Logic
 
-We need stats to decay over time — a Tamagotchi that never gets hungry isn't much fun. We use [`millis()`](https://docs.arduino.cc/language-reference/en/functions/time/millis/) instead of [`delay()`](https://docs.arduino.cc/language-reference/en/functions/time/delay/) because `delay()` freezes the entire program (no input, no rendering), while `millis()` lets everything else keep running.
+We need stats to decay over time. A Tamagotchi that never gets hungry isn't much fun. We use [`millis()`](https://docs.arduino.cc/language-reference/en/functions/time/millis/) instead of [`delay()`](https://docs.arduino.cc/language-reference/en/functions/time/delay/) because `delay()` freezes the entire program (no input, no rendering), while `millis()` lets everything else keep running.
 
 ```cpp
 unsigned long lastUpdate = 0;
@@ -148,17 +148,17 @@ void updatePet() {
 
 **Line-by-line breakdown:**
 
-- `unsigned long lastUpdate = 0;` — Remembers the last time we updated the pet. Starts at 0 (boot time).
-- `millis() - lastUpdate > 5000` — `millis()` returns the number of milliseconds since the board powered on. By subtracting `lastUpdate`, we get the elapsed time. If more than 5000ms (5 seconds) have passed, it's time to update.
-- `pet.hunger--` — The [`--` operator](https://cplusplus.com/doc/tutorial/operators/) decrements by 1. Every 5 seconds, the pet gets slightly hungrier, sadder, and more tired.
-- `if (pet.hunger < 0) pet.hunger = 0;` — **Clamping**: we prevent stats from going below zero. Without this, hunger could hit -50, which makes no sense.
-- `lastUpdate = millis();` — Reset the timer so the next update happens 5 seconds from *now*.
+- `unsigned long lastUpdate = 0;` - Remembers the last time we updated the pet. Starts at 0 (boot time).
+- `millis() - lastUpdate > 5000` - `millis()` returns the number of milliseconds since the board powered on. By subtracting `lastUpdate`, we get the elapsed time. If more than 5000ms (5 seconds) have passed, it's time to update.
+- `pet.hunger--` - The [`--` operator](https://cplusplus.com/doc/tutorial/operators/) decrements by 1. Every 5 seconds, the pet gets slightly hungrier, sadder, and more tired.
+- `if (pet.hunger < 0) pet.hunger = 0;` - **Clamping**: we prevent stats from going below zero. Without this, hunger could hit -50, which makes no sense.
+- `lastUpdate = millis();` - Reset the timer so the next update happens 5 seconds from *now*.
 
-> **Key concept — non-blocking timing:** This `millis()` pattern is fundamental to embedded programming. It's how you schedule periodic tasks without blocking the CPU. You'll see this exact pattern in [Arduino's BlinkWithoutDelay example](https://docs.arduino.cc/built-in-examples/digital/BlinkWithoutDelay/).
+> **Key concept: non-blocking timing.** This `millis()` pattern is fundamental to embedded programming. It's how you schedule periodic tasks without blocking the CPU. You'll see this exact pattern in [Arduino's BlinkWithoutDelay example](https://docs.arduino.cc/built-in-examples/digital/BlinkWithoutDelay/).
 
 ## Step 9: Simulating Button Input (No Hardware)
 
-Since no physical buttons exist yet, we simulate them using the [Serial Monitor](https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-monitor/). You type a character, the board reads it, and changes state — exactly like a button press would.
+Since no physical buttons exist yet, we simulate them using the [Serial Monitor](https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-monitor/). You type a character, the board reads it, and changes state, exactly like a button press would.
 
 ```cpp
 void checkSerialInput() {
@@ -183,10 +183,10 @@ void checkSerialInput() {
 
 **Line-by-line breakdown:**
 
-- [`Serial.available()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/available/) — Returns the number of bytes waiting in the serial input buffer. If it's 0, no one has typed anything — so we skip the rest.
-- [`Serial.read()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/read/) — Reads **one byte** from the buffer and removes it. We store it as a `char` (a single character).
-- `if (input == 'f')` — Single quotes `'f'` denote a [character literal](https://cplusplus.com/doc/tutorial/constants/). We compare the typed character to our command set.
-- `currentScreen = SCREEN_FEED;` — This is the state transition. We don't do the feeding here — we just change the state. The actual logic happens in Step 10. This separation is important: **input detection** and **action execution** are different responsibilities.
+- [`Serial.available()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/available/) - Returns the number of bytes waiting in the serial input buffer. If it's 0, no one has typed anything, so we skip the rest.
+- [`Serial.read()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/read/) - Reads **one byte** from the buffer and removes it. We store it as a `char` (a single character).
+- `if (input == 'f')` - Single quotes `'f'` denote a [character literal](https://cplusplus.com/doc/tutorial/constants/). We compare the typed character to our command set.
+- `currentScreen = SCREEN_FEED;` - This is the state transition. We don't do the feeding here; we just change the state. The actual logic happens in Step 10. This separation is important: **input detection** and **action execution** are different responsibilities.
 
 **Serial Monitor commands:**
 
@@ -199,7 +199,7 @@ void checkSerialInput() {
 
 ## Step 10: Screen Logic
 
-This is where state transitions have **consequences**. Each screen modifies the pet's stats and then immediately returns to the main screen. This makes each action a **one-shot event** — press feed, hunger goes up, done.
+This is where state transitions have **consequences**. Each screen modifies the pet's stats and then immediately returns to the main screen. This makes each action a **one-shot event**: press feed, hunger goes up, done.
 
 ```cpp
 void handleScreenLogic() {
@@ -226,21 +226,21 @@ void handleScreenLogic() {
       break;
 
     case SCREEN_MAIN:
-      break;  // do nothing — just display stats
+      break;  // do nothing, just display stats
   }
 }
 ```
 
 **Line-by-line breakdown:**
 
-- [`switch(currentScreen)`](https://docs.arduino.cc/language-reference/en/structure/control-structure/switchCase/) — A switch is like a multi-way `if/else`, but cleaner when comparing one variable against many known values. The CPU jumps directly to the matching `case`.
-- `pet.hunger += 10;` — The [`+=` operator](https://cplusplus.com/doc/tutorial/operators/) adds 10 to the current value. Feeding restores 10 hunger points.
-- `if (pet.hunger > 100) pet.hunger = 100;` — **Upper clamping**: stats can't exceed 100. This is the mirror of the lower clamping in `updatePet()`.
-- `pet.energy -= 5;` — Playing costs energy. This creates a **trade-off**: playing makes the pet happier but more tired. Trade-offs make games interesting.
-- `currentScreen = SCREEN_MAIN;` — After the action completes, return to main. This makes each action a one-shot: the player must actively choose to do something again.
-- `break;` — **Critical!** Without [`break`](https://docs.arduino.cc/language-reference/en/structure/control-structure/break/), execution "falls through" to the next `case`. This is a common C++ bug.
+- [`switch(currentScreen)`](https://docs.arduino.cc/language-reference/en/structure/control-structure/switchCase/) - A switch is like a multi-way `if/else`, but cleaner when comparing one variable against many known values. The CPU jumps directly to the matching `case`.
+- `pet.hunger += 10;` - The [`+=` operator](https://cplusplus.com/doc/tutorial/operators/) adds 10 to the current value. Feeding restores 10 hunger points.
+- `if (pet.hunger > 100) pet.hunger = 100;` - **Upper clamping**: stats can't exceed 100. This is the mirror of the lower clamping in `updatePet()`.
+- `pet.energy -= 5;` - Playing costs energy. This creates a **trade-off**: playing makes the pet happier but more tired. Trade-offs make games interesting.
+- `currentScreen = SCREEN_MAIN;` - After the action completes, return to main. This makes each action a one-shot: the player must actively choose to do something again.
+- `break;` - **Critical!** Without [`break`](https://docs.arduino.cc/language-reference/en/structure/control-structure/break/), execution "falls through" to the next `case`. This is a common C++ bug.
 
-> **Design insight:** Notice that `SCREEN_MAIN` does nothing — it just `break`s. That's intentional. The main screen is a "resting" state where we only display stats. All the action happens in the other states.
+> **Design insight:** Notice that `SCREEN_MAIN` does nothing; it just `break`s. That's intentional. The main screen is a "resting" state where we only display stats. All the action happens in the other states.
 
 ## Step 11: Display Function (Serial UI)
 
@@ -267,14 +267,14 @@ void render() {
 
 **Key details:**
 
-- [`Serial.print()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/print/) vs [`Serial.println()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/println/) — `print()` writes text **without** a newline; `println()` adds one. We use `print()` for the label and `println()` for the value so they appear on the same line: `Hunger: 80`.
+- [`Serial.print()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/print/) vs [`Serial.println()`](https://docs.arduino.cc/language-reference/en/functions/communication/serial/println/) - `print()` writes text **without** a newline; `println()` adds one. We use `print()` for the label and `println()` for the value so they appear on the same line: `Hunger: 80`.
 - The `"------"` separators create a visual frame so each update is easy to read in the scrolling Serial Monitor output.
 
-> **Phase 2 upgrade:** When we add the OLED display, this function gets rewritten to draw pixels instead of printing text — but the *interface* stays the same: one function called `render()` that shows the current state.
+> **Phase 2 upgrade:** When we add the OLED display, this function gets rewritten to draw pixels instead of printing text, but the *interface* stays the same: one function called `render()` that shows the current state.
 
 ## Step 12: Main Loop
 
-[`loop()`](https://docs.arduino.cc/language-reference/en/structure/sketch/loop/) runs **continuously** after `setup()` finishes — the Arduino framework calls it over and over in an infinite loop. This is where we orchestrate everything.
+[`loop()`](https://docs.arduino.cc/language-reference/en/structure/sketch/loop/) runs **continuously** after `setup()` finishes. The Arduino framework calls it over and over in an infinite loop. This is where we orchestrate everything.
 
 ```cpp
 void loop() {
@@ -302,11 +302,11 @@ void loop() {
 └──────────────────────────────────────────────────────┘
 ```
 
-1. **Input** — Check if the player typed a command. This sets `currentScreen` but doesn't act on it yet.
-2. **Update** — Decay stats based on elapsed time. This happens regardless of player input.
-3. **Logic** — If the player triggered an action (feed/play/sleep), execute it now and return to main.
-4. **Render** — Display the results of everything that just happened.
-5. **Wait** — `delay(1000)` pauses for 1 second so the Serial Monitor doesn't flood with output.
+1. **Input** - Check if the player typed a command. This sets `currentScreen` but doesn't act on it yet.
+2. **Update** - Decay stats based on elapsed time. This happens regardless of player input.
+3. **Logic** - If the player triggered an action (feed/play/sleep), execute it now and return to main.
+4. **Render** - Display the results of everything that just happened.
+5. **Wait** - `delay(1000)` pauses for 1 second so the Serial Monitor doesn't flood with output.
 
 > **This is a real [game loop](https://gameprogrammingpatterns.com/game-loop.html) pattern.** The same Input → Update → Render cycle is used in professional game engines, RTOS firmware, and GUI frameworks. Learning it here means you already understand the architecture of much larger systems.
 
@@ -325,7 +325,7 @@ Without any hardware beyond a USB cable, you now understand:
 | [Serial communication](https://docs.arduino.cc/language-reference/en/functions/communication/serial/) | Input & output (Steps 7, 9, 11) |
 | [Switch statements](https://docs.arduino.cc/language-reference/en/structure/control-structure/switchCase/) | Screen logic (Step 10) |
 | [Game loop architecture](https://gameprogrammingpatterns.com/game-loop.html) | `loop()` structure (Step 12) |
-| Value clamping | Keeping stats in 0–100 range (Steps 8, 10) |
+| Value clamping | Keeping stats in 0 to 100 range (Steps 8, 10) |
 | Trade-off design | Playing costs energy (Step 10) |
 
 > That is far more valuable than blinking LEDs.
@@ -340,6 +340,6 @@ The brilliant part of this architecture: **swapping in real hardware only change
 | `Serial.print()` for display | [SSD1306 OLED drawing](https://github.com/adafruit/Adafruit_SSD1306) | Only `render()` |
 | No feedback | [Piezo buzzer tones](https://docs.arduino.cc/language-reference/en/functions/advanced-io/tone/) | Add to `handleScreenLogic()` |
 
-The `Pet` struct, the state machine, the game loop, the update logic — **none of that changes**. The architecture remains unchanged.
+The `Pet` struct, the state machine, the game loop, the update logic: **none of that changes**. The architecture remains unchanged.
 
 **That is the lesson:** write firmware around *clean abstractions*, and the hardware becomes interchangeable.
