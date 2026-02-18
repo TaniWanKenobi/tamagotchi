@@ -52,7 +52,9 @@ A custom PCB-based Tamagotchi virtual pet built with the XIAO-ESP32-C6 microcont
 
 I made the project to have my own completely customizable tamagatchi! I also want you to customize yours however you want - check my [tutorial](/tutorial.md) for instructions! 
 
-<!-- Will add how to use when i make the firmware lmao -->
+To use this, simply flash the xiao with the firmware in the repo! Here is an assembly diagram:
+
+![assembly](https://cdn.hackclub.com/019c5fac-e2db-73dc-9d46-40b499d3461a/image.png)
 
 ### PCB Design
 

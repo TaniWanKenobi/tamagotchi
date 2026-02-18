@@ -114,13 +114,13 @@ It's Arduino's version of a C++ source file. The IDE wraps it with `#include <Ar
 
 ## Step 6: Reading Your Schematic for Firmware
 
-Before writing any code, open your `.kicad_sch` file and trace every component's wires to the MCU. Your schematic is the single source of truth — if your code doesn't match it, nothing will work on the real board.
+Before writing any code, open your `.kicad_sch` file and trace every component's wires to the MCU. Your schematic is the single source of truth. If your code doesn't match it, nothing will work on the real board.
 
 For each component, follow its wires to the MCU and write down the **GPIO number**. KiCad shortcut: click any wire and press **`** (backtick) to highlight the entire net.
 
 ### My Results
 
-Here's what I found after tracing my schematic. **Yours will differ — use your own GPIO numbers.**
+Here's what I found after tracing my schematic. **Yours will differ. Use your own GPIO numbers.**
 
 **Buttons** (active-low: one side to GND, other side to MCU → reads `LOW` when pressed):
 
@@ -130,14 +130,14 @@ Here's what I found after tracing my schematic. **Yours will differ — use your
 | SW2 | Pin 2 | GPIO1 |
 | SW3 | Pin 3 | GPIO2 |
 
-**OLED Display** (I²C — address is usually `0x3C`, check your datasheet):
+**OLED Display** (I²C address is usually `0x3C`, check your datasheet):
 
 | OLED Pin | MCU Pin | GPIO |
 |----------|---------|------|
 | SDA | Pin 5 | GPIO22 |
 | SCL | Pin 6 | GPIO23 |
 
-**Buzzer** (positive terminal tied to 3.3V — GPIO **sinks** current, so `LOW` = ON):
+**Buzzer** (positive terminal tied 3.3V to GPIO **sinks** current, so `LOW` = ON):
 
 | Buzzer Pin | MCU Pin | GPIO |
 |------------|---------|------|
