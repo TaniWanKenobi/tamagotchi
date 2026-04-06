@@ -17,6 +17,7 @@
     - [Assigning Footprints](#assigning-footprints)
   - [Creating the PCB](#creating-the-pcb)
     - [Laying Out Components](#laying-out-components)
+    - [Button Footprint Mismatch](#button-footprint-mismatch)
     - [Defining the Board Outline](#defining-the-board-outline)
   - [PCB Routing](#pcb-routing)
     - [Placing Components](#placing-components)
