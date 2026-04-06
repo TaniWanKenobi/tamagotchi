@@ -269,6 +269,8 @@ The footprint will refresh with the corrected pad numbering: one net on Side A, 
 
 > Does this not work? Try deleting the buttons, and updating from schematic again :)
 
+![](https://cdn.hackclub.com/019d6529-b11d-7d96-830f-c7431f1d8092/image.png)
+
 ### Defining the Board Outline
 
 You'll notice a white outline surrounding the entire board. This is the **Edge Cuts** layer, which defines the physical boundary where the PCB will be cut.
