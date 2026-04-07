@@ -565,6 +565,18 @@ I recommend **not** following the above 1:1; this was my process, and it will di
 
 I also recommend checking my [Onshape](https://cad.onshape.com/documents/fa5791d8e7f345b436054923/w/ad8e09905eb572b0a8a40e9d/e/e81f06aa82a76dd04f8e6832?renderMode=0&uiState=6990af61d8ec4667253f72ea) for inspiration! Check my feature tree and see my iterations yourself.
 
+> **A note:**
+>
+> This project took me way longer than expected, and that's completely normal.
+>
+>This project took me way longer than expected, and that's completely normal. My 3D printer wouldn't connect to the network, then had config issues once it did. I spent hours trying to flash my XIAO to the wrong COM port before realizing the flashing process had changed. A button stopped working after soldering, and while trying to fix it I accidentally shorted something on the XIAO, which took a few more hours to debug and desolder.
+>
+> None of this means you did something wrong. You got this!
+>
+> The biggest thing I learned: if you're stuck on something that feels like it's eating hours with no end in sight, it's often faster to find a completely different approach than to keep pushing through. Flashing not working? Try a different method. Component not desoldering cleanly? Maybe there's a workaround that doesn't require removing it at all. The path forward usually exists, it just might not be the one you started on.
+>
+> You've got the whole Fallout community to ask for help :D
+
 Enjoy making :D!
 
 
