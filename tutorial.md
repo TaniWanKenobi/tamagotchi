@@ -40,7 +40,7 @@
 Download KiCad from the official site: **[https://www.kicad.org/download/](https://www.kicad.org/download/)**
 
 1. Go to the download page and select your operating system (Windows, macOS, or Linux).
-2. Download the latest **stable release** (KiCad 9.x).
+2. Download the latest **stable release** (KiCad 10.x).
 3. Run the installer and follow the on-screen instructions (the defaults are fine).
 4. When prompted, make sure to **install the default libraries** (they're selected by default).
 5. Launch KiCad and create a new project (**File → New Project** or **Ctrl+N**).
@@ -53,7 +53,7 @@ KiCad ships with a large set of schematic symbols, PCB footprints, and 3D models
 </details>
 
 > **New to KiCad?** Read the official getting started guide before continuing:
-> [KiCad 9.0: Getting Started](https://docs.kicad.org/9.0/en/getting_started_in_kicad/getting_started_in_kicad.html)
+> [KiCad 10.0: Getting Started](https://docs.kicad.org/10.0/en/getting_started_in_kicad/getting_started_in_kicad.html)
 
 ---
 
@@ -144,6 +144,7 @@ Each button connects one side to **GND** and the other to a **GPIO pin** with th
 </details>
 
 <details>
+  
 <summary>What is a GPIO pin?</summary>
 
 GPIO stands for **General Purpose Input/Output**. These are the programmable pins on your microcontroller that can be configured as either inputs (to read sensors/buttons) or outputs (to drive LEDs/buzzers). On the XIAO, pins like D0–D10 are GPIOs.
