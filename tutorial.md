@@ -502,15 +502,13 @@ Go to [jlcpcb.com](https://jlcpcb.com/) and make an account. Then, add your Gerb
 
 You should keep the default settings for everything. The only thing you should/can change is the **PCB Color**. I did black as seen below:
 
-![PCB color](https://cdn.hackclub.com/019c5535-26c4-788a-8508-d053d383fd8d/2b2ea8e606d05ddff382fdcc7934da4bff70615c_image.webp)
+![PCB color](https://cdn.hackclub.com/019d69c3-8a8d-72bd-b620-ac8daa1d780e/image.png)
 
 For high-spec options, also keep the default. **Do not** click PCB assembly. We will give you a kit to hand-solder your board.
 
 ![High-spec options](https://cdn.hackclub.com/019c5535-28a4-787e-8bf4-ba4fcbce1653/053061912ca84c66c46323ccef5b12cb71c7d721_image.webp)
 
-Once you have successfully *not* changed any of the settings (except the board color), on the right, change the shipping method to **Global Standard Direct** (or **Air Registered Mail** if it is cheaper), and take a screenshot (this is very important).
-
-![Shipping](https://cdn.hackclub.com/019c5535-2ab1-7ba1-aa97-7d7a87e4203a/6f538d5f301eae997544c43c1d6ce6daca01331d_image.webp)
+Once you have successfully *not* changed any of the settings (except the board color), on the right, change the shipping method to **Global Standard Direct** (or **Air Registered Mail** if it is cheaper).
 
 ---
 
