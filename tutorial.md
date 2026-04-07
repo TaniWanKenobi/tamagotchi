@@ -40,7 +40,7 @@
 Download KiCad from the official site: **[https://www.kicad.org/download/](https://www.kicad.org/download/)**
 
 1. Go to the download page and select your operating system (Windows, macOS, or Linux).
-2. Download the latest **stable release** (KiCad 9.x).
+2. Download the latest **stable release** (KiCad 10.x).
 3. Run the installer and follow the on-screen instructions (the defaults are fine).
 4. When prompted, make sure to **install the default libraries** (they're selected by default).
 5. Launch KiCad and create a new project (**File → New Project** or **Ctrl+N**).
