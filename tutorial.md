@@ -565,7 +565,7 @@ I recommend **not** following the above 1:1; this was my process, and it will di
 
 I also recommend checking my [Onshape](https://cad.onshape.com/documents/fa5791d8e7f345b436054923/w/ad8e09905eb572b0a8a40e9d/e/e81f06aa82a76dd04f8e6832?renderMode=0&uiState=6990af61d8ec4667253f72ea) for inspiration! Check my feature tree and see my iterations yourself.
 
-> **A note:**
+> **A Note:**
 >
 > This project took me way longer than expected, and that's completely normal.
 >
