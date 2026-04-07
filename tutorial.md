@@ -569,7 +569,7 @@ I also recommend checking my [Onshape](https://cad.onshape.com/documents/fa5791d
 >
 > This project took me way longer than expected, and that's completely normal.
 >
->This project took me way longer than expected, and that's completely normal. My 3D printer wouldn't connect to the network, then had config issues once it did. I spent hours trying to flash my XIAO to the wrong COM port before realizing the flashing process had changed. A button stopped working after soldering, and while trying to fix it I accidentally shorted something on the XIAO, which took a few more hours to debug and desolder.
+> My 3D printer wouldn't connect to the network, then had config issues once it did. I spent hours trying to flash my XIAO to the wrong COM port before realizing the flashing process had changed. A button stopped working after soldering, and while trying to fix it I accidentally shorted something on the XIAO, which took a few more hours to debug and desolder.
 >
 > None of this means you did something wrong. You got this!
 >
