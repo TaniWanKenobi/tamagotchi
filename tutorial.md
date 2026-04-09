@@ -529,6 +529,8 @@ Once you have successfully *not* changed any of the settings (except the board c
 
 Export the PCB from KiCad into your CAD platform! For me, this is Onshape.
 
+**Check [this amazing onshape tutorial](https://www.youtube.com/watch?v=d4QzBdcQoe0&list=PLGqRUdq5ULsMDOxmu10AGPDIOkzNYu7D7&index=2)!**
+
 I googled and found headers! I found this from [here](https://www.3dcontentcentral.com/download-model.aspx?catalogid=171&id=1025256)!
 
 I then experimented with the CAD a lot. I used revolve, but it did not look nice and was hard to use. I also tried multiple placements for the battery and found it was optimal if it's placed vertically.
