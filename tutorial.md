@@ -66,6 +66,8 @@ The XIAO-ESP32-C6 will be used as the MCU! This is because it's tiny and include
 
 MCU stands for **Microcontroller Unit**, the tiny computer (brain) of your project. It runs your code and controls all the other components (display, buttons, buzzer, etc.). The XIAO-ESP32-C6 is the MCU we're using here.
 
+That said, other MCUs are worth knowing about. The RP2040 is a good pick if you don't need wireless: dual-core, and has really good documentation! The nRF52840 is the go-to for low power BLE projects, with sleep currents that blow the ESP32 out of the water. For this project the C6 wins because it's the same price as other XIAO variants, has WiFi 6 and BLE 5 built in, and includes onboard LiPo charging so no external charger chip is needed. The kit uses the C6 for those reasons.
+
 </details>
 
 <details>
@@ -97,6 +99,9 @@ First, I imported the XIAO-ESP32-C6 from the [OPL Library](https://github.com/Se
 I then clicked **A** (Add Symbol), searched for the part, and imported it. I ended up with this:
 
 ![Xiao](https://cdn.hackclub.com/019c6725-d62c-77f5-beae-23fda60a21ef/image.png)
+
+Most symbols won't label every pin with its function (SDA, SCL, MOSI, etc.) They'll just show pin numbers. When that happens, google the MCU name + "pinout" to find the official diagram and cross-reference which pin number maps to which function :D 
+
 
 Now, for this tutorial, I will create the base Tamagotchi. Spice your own Tamagotchi up more than this one! Add some flavor!
 
@@ -281,12 +286,20 @@ This is done by modifying the `Edge.Cuts` layer on the right side. There are man
 
 I found the default outline options limiting and wanted to create something more complex. To do this, I:
 
-1. Drew out the edge cuts layer.
+1. Drew out the edge cuts layer. I just did this on figma, you can do this anywhere!!!
 2. Converted the image into a DXF file using an image-to-DXF converter.
 3. Imported the DXF file into KiCad.
 4. Created a 100×100 mm box as a reference.
 5. Used the measuring tool to determine the correct scale.
 6. Scaled the outline down so it fit within 100 mm.
+
+![cutout](https://cdn.hackclub.com/019d6fcf-c1dc-7c1b-be3c-a8aac74ded7a/image.png)
+
+You can also use the kicad tools on the right to draw a barrier, they work well! I just wanted to make a cool and unique border. You should try it!
+
+![](https://cdn.hackclub.com/019d6fd1-62ad-753b-81ce-07980f6496e3/image.png)
+
+
 
 ---
 
@@ -548,6 +561,8 @@ I made the back portion with 3D-printed standoffs and added large fillets to rou
 
 I added a hole for the battery and a hole for the USB-C. Generally, there may be issues printing this, but for this small amount of bridging there shouldn't be any issues!
 
+I also made sure to add an offset to the USB C! The USB-C I measured with my calipers was 7 mm x 13 mm about, would reccomend making it bigger just in case by ~ 1 mm. If you have a 3d printer, you can just test values yourself! My values worked for me (12.5 x 7.5 mm, athough they are pretty tight, **I would def make it a little bigger**)
+
 ![](https://cdn.hackclub.com/019c5c85-ee74-7721-ab42-03937224ebe6/image.png)
 
 ![](https://cdn.hackclub.com/019c5c87-d8d2-7de5-bc94-b7690c845c4c/image.png)
@@ -556,9 +571,9 @@ Finally, I used the section view tool to confirm that there is no overlapping:
 
 ![](https://cdn.hackclub.com/019c5c89-1791-78d6-9b35-902744dcb72a/image.png)
 
-Now, my design is finished! I uploaded all necessary files to my GitHub repo.
+Now, my design is finished! I uploaded all necessary files to my GitHub repo. 
 
-**Note: Design is an iterative process. I spent about 20 hours manually adjusting everything to look as pretty as possible! But don't worry, #fallout is here to guide you! This is a normal process and you are not alone.**
+**Note: Design is an iterative process. I spent about 20+ hours manually adjusting everything to look as pretty as possible! But don't worry, #fallout is here to guide you! This is a normal process and you are not alone.**
 
 I recommend **not** following the above 1:1; this was my process, and it will differ greatly from yours!
 
