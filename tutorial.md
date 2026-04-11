@@ -59,14 +59,14 @@ KiCad ships with a large set of schematic symbols, PCB footprints, and 3D models
 
 ## Creating the Schematic
 
-The XIAO-ESP32-C6 will be used as the MCU! This is because it's tiny and includes WiFi, Bluetooth, and built‑in battery charging, which makes it perfect for this.
+The XIAO-ESP32-C3 will be used as the MCU in this guide! This is because it's tiny and includes WiFi, Bluetooth, and built‑in battery charging, which makes it perfect for this.
 
 <details>
 <summary>What is an MCU?</summary>
 
 MCU stands for **Microcontroller Unit**, the tiny computer (brain) of your project. It runs your code and controls all the other components (display, buttons, buzzer, etc.). The XIAO-ESP32-C6 is the MCU we're using here.
 
-That said, other MCUs are worth knowing about. The RP2040 is a good pick if you don't need wireless: dual-core, and has really good documentation! The nRF52840 is the go-to for low power BLE projects, with sleep currents that blow the ESP32 out of the water. For this project the C6 wins because it's the same price as other XIAO variants, has WiFi 6 and BLE 5 built in, and includes onboard LiPo charging so no external charger chip is needed. The kit uses the C6 for those reasons.
+That said, other MCUs are worth knowing about. The RP2040 is a good pick if you don't need wireless: dual-core, and has really good documentation! The nRF52840 is the go-to for low power BLE projects, with sleep currents that blow the ESP32 out of the water. For this project the C3 wins because it's affordable, has WiFi and BLE built in, and includes onboard LiPo charging so no external charger chip is needed. The kit uses the C3 for those reasons.
 
 </details>
 
