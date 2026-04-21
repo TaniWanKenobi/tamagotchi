@@ -45,12 +45,10 @@ Download KiCad from the official site: **[https://www.kicad.org/download/](https
 4. When prompted, make sure to **install the default libraries** (they're selected by default).
 5. Launch KiCad and create a new project (**File → New Project** or **Ctrl+N**).
 
-<details>
-<summary>What are the default libraries?</summary>
 
-KiCad ships with a large set of schematic symbols, PCB footprints, and 3D models. These cover most common components (resistors, capacitors, connectors, etc.) so you don't have to create them from scratch. You'll still need to import specialty parts (like the XIAO or OLED), but the defaults cover the basics.
+What are the default libraries?
 
-</details>
+> KiCad ships with a large set of schematic symbols, PCB footprints, and 3D models. These cover most common components (resistors, capacitors, connectors, etc.) so you don't have to create them from scratch. You'll still need to import specialty parts (like the XIAO or OLED), but the defaults cover the basics.
 
 > **New to KiCad?** Read the official getting started guide before continuing:
 > [KiCad 10.0: Getting Started](https://docs.kicad.org/10.0/en/getting_started_in_kicad/getting_started_in_kicad.html)
@@ -61,77 +59,87 @@ KiCad ships with a large set of schematic symbols, PCB footprints, and 3D models
 
 The XIAO-ESP32-C3 will be used as the MCU in this guide! This is because it's tiny and includes WiFi, Bluetooth, and built‑in battery charging, which makes it perfect for this.
 
-<details>
-<summary>What is an MCU?</summary>
+What is an MCU?
 
-MCU stands for **Microcontroller Unit**, the tiny computer (brain) of your project. It runs your code and controls all the other components (display, buttons, buzzer, etc.). The XIAO-ESP32-C6 is the MCU we're using here.
+> MCU stands for **Microcontroller Unit**, the tiny computer (brain) of your project. It runs your code and controls all the other components (display, buttons, buzzer, etc.). The XIAO-ESP32-C3 is the MCU we're using here.
+>
+> That said, other MCUs are worth knowing about. The RP2040 is a good pick if you don't need wireless: dual-core, and has really good documentation! The nRF52840 is the go-to for low power BLE projects, with sleep currents that blow the ESP32 out of the water. For this project the C3 wins because it's affordable, has WiFi and BLE built in, and includes onboard LiPo charging so no external charger chip is needed.I use the C3 for those reasons.
 
-That said, other MCUs are worth knowing about. The RP2040 is a good pick if you don't need wireless: dual-core, and has really good documentation! The nRF52840 is the go-to for low power BLE projects, with sleep currents that blow the ESP32 out of the water. For this project the C3 wins because it's affordable, has WiFi and BLE built in, and includes onboard LiPo charging so no external charger chip is needed. The kit uses the C3 for those reasons.
+Useful schematic editor keybinds
 
-</details>
-
-<details>
-<summary>Useful schematic editor keybinds</summary>
-
-| Key | Action |
-|-----|--------|
-| **A** | Add a symbol (component) |
-| **W** | Draw a wire |
-| **P** | Add a power symbol (VCC, GND, 3V3, etc.) |
-| **L** | Add a net label |
-| **M** | Move a component |
-| **R** | Rotate a component |
-| **G** | Grab/drag a component (keeps wires attached) |
-| **E** | Edit component properties |
-| **C** | Copy a component |
-| **Delete** | Delete selected item |
-| **Ctrl+Z** | Undo |
-| **Ctrl+S** | Save |
-
-</details>
+> | Key | Action |
+> |-----|--------|
+> | **A** | Add a symbol (component) |
+> | **W** | Draw a wire |
+> | **P** | Add a power symbol (VCC, GND, 3V3, etc.) |
+> | **L** | Add a net label |
+> | **M** | Move a component |
+> | **R** | Rotate a component |
+> | **G** | Grab/drag a component (keeps wires attached) |
+> | **E** | Edit component properties |
+> | **C** | Copy a component |
+> | **Delete** | Delete selected item |
+> | **Ctrl+Z** | Undo |
+> | **Ctrl+S** | Save |
 
 ### Importing the MCU
 
-First, I imported the XIAO-ESP32-C6 from the [OPL Library](https://github.com/Seeed-Studio/OPL_Kicad_Library/tree/master). Here's an [excellent tutorial](https://www.youtube.com/watch?v=lnCvyGIQong) on using it!
+First, I imported the XIAO-ESP32-C3 from the [SeeedStudio Wiki](https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/). Here's an [excellent tutorial](https://www.youtube.com/watch?v=lnCvyGIQong) on using it!
 
-<!-- I will create my own video later, which may be easier to use, if trouble is reported understanding it. I think beginners may struggle. -->
+I downloaded from this:
+
+![](https://cdn.hackclub.com/019d848c-2e6a-7afd-ab8b-fc6f28d32ac7/image.png)
+
+
 
 I then clicked **A** (Add Symbol), searched for the part, and imported it. I ended up with this:
 
-![Xiao](https://cdn.hackclub.com/019c6725-d62c-77f5-beae-23fda60a21ef/image.png)
+![Xiao](https://cdn.hackclub.com/019d985d-8af2-746a-901e-c897ece4b3fa/image.png)
 
 Most symbols won't label every pin with its function (SDA, SCL, MOSI, etc.) They'll just show pin numbers. When that happens, google the MCU name + "pinout" to find the official diagram and cross-reference which pin number maps to which function :D 
 
 
-Now, for this tutorial, I will create the base Tamagotchi. Spice your own Tamagotchi up more than this one! Add some flavor!
+**Now, for this tutorial, I will create the base Tamagotchi. Spice your own Tamagotchi up more than this one! Add some flavor!**
+
+I then connect GND to GND, 5V to +5V, 3V3 to  and BAT to + as shown below:
+
+![Power connections](https://files.catbox.moe/kgmyi6.png)
+
+**Why didn't I connect the top pads?**
+
+![](https://files.catbox.moe/ozimcj.png)
+
+
+I didn't connect them because I don't need JTAG debugging for this project. A JTAG debug cable is a special cable that connects your computer to these pads, letting you pause your program mid-run and inspect exactly what's happening inside the chip line by line. USB-C handles everything we need here.
+
+You may use them if you want, but I didn't because it would complicate the PCB for not much benefit. You might want to use them if you have a really tricky bug that Serial printing can't help you catch, or if you run out of GPIO pins and need extras.
 
 ### Adding the OLED Display
 
 I then added the [0.96" OLED](https://www.lcsc.com/product-detail/C5248080.html) via EasyEDA to KiCad. Follow this [guide](https://hwdocs.hackclub.dev/user-contrib-guides/easyeda2kicad/)!
 
-I connected GND to GND, SDA to SDA, and SCL to SCL. Use **W** to draw wires between pins.
+I connected GND to GND, SDA to SDA, and SCL to SCL. Use **W** to draw wires between pins!
 
-<details>
-<summary>What are SDA, SCL, and GND?</summary>
+What are SDA, SCL, and GND?
 
-- **GND** = Ground, the common reference point for all electrical signals.
-- **SDA** = Serial Data, the line that carries data back and forth over I2C.
-- **SCL** = Serial Clock, the line that provides the timing signal for I2C communication.
+> - **GND** = Ground, the common reference point for all electrical signals.
+> - **SDA** = Serial Data, the line that carries data back and forth over I2C.
+> - **SCL** = Serial Clock, the line that provides the timing signal for I2C communication.
+>
+> I2C is a protocol that lets multiple devices talk over just two wires (SDA + SCL).
 
-I2C is a protocol that lets multiple devices talk over just two wires (SDA + SCL).
+Do I need pull-up resistors on SDA and SCL?
 
-</details>
-
-<details>
-<summary>Do I need pull-up resistors on SDA and SCL?</summary>
-
-Normally yes. I2C requires pull‑up resistors on SDA and SCL; however, the XIAO boards already include internal pull‑ups, so you don't need external ones here.
-
-</details>
+> Normally yes. I2C requires pull‑up resistors on SDA and SCL; however, the XIAO boards already include internal pull‑ups, so you don't need external ones here.
 
 I checked the [datasheet](https://www.lcsc.com/datasheet/C5248080.pdf) attached on the LCSC page and found that VCC should be connected to 3V3.
 
 ![](https://github.com/user-attachments/assets/15b279c4-acc2-40db-b04b-2e664e778855)
+
+I therefore connected it as such
+
+![](https://files.catbox.moe/34nu2g.png)
+
 
 ### Adding Buttons
 
@@ -139,22 +147,20 @@ Since a Tamagotchi has three buttons, I decided to add those as well!
 
 For this, I decided to use an **active‑low** button layout (which is the most common approach).
 
+
+What does "active-low" mean?
+
+> "Active-low" means the button is considered "pressed" when the signal goes LOW (0V / GND). When the button is not pressed, the internal pull-up resistor keeps the pin HIGH (3.3V). This is the most common button wiring approach because it's simple: you only need the button and a ground connection, no extra resistors.
+
 Each button connects one side to **GND** and the other to a **GPIO pin** with the XIAO's **internal pull‑up** enabled. This makes the pin read **HIGH** when the button is idle, and **LOW** when the button is pressed.
 
-<details>
-<summary>What does "active-low" mean?</summary>
+![](https://files.catbox.moe/bclgxg.png)
 
-"Active-low" means the button is considered "pressed" when the signal goes LOW (0V / GND). When the button is not pressed, the internal pull-up resistor keeps the pin HIGH (3.3V). This is the most common button wiring approach because it's simple: you only need the button and a ground connection, no extra resistors.
+What is a GPIO pin?
 
-</details>
+> GPIO stands for **General Purpose Input/Output**. These are the programmable pins on your microcontroller that can be configured as either inputs (to read sensors/buttons) or outputs (to drive LEDs/buzzers). On the XIAO, pins like D0–D10 are GPIOs.
 
-<details>
-  
-<summary>What is a GPIO pin?</summary>
 
-GPIO stands for **General Purpose Input/Output**. These are the programmable pins on your microcontroller that can be configured as either inputs (to read sensors/buttons) or outputs (to drive LEDs/buzzers). On the XIAO, pins like D0–D10 are GPIOs.
-
-</details>
 
 ### Adding a Buzzer
 
@@ -162,7 +168,24 @@ I also added a buzzer from [here](https://www.lcsc.com/product-detail/C49246964.
 
 The buzzer is wired with one pin to a GPIO output and the other to GND, letting the GPIO drive it with a square‑wave tone.
 
-![](https://github.com/user-attachments/assets/68f89dc9-19ea-4992-93f8-83674963e40d)
+![](https://files.catbox.moe/4ksaud.png)
+
+I then added the battery.
+
+The XIAO ESP32C3 has built-in battery charging, so all you need to do is connect a LiPo battery directly to the BAT pin. This lets the board run wirelessly and automatically charges the battery whenever you plug in USB-C.
+
+BAT is connected only to the battery because it is a dedicated charging pin, separate from the main 3.3V power rail. GND however is shared across everything on the board, since all components need a common ground reference to work correctly.
+
+![](https://files.catbox.moe/wbgbys.png)
+
+> **Don't forget to place no-connect flags where there aren't connections!**
+
+Press `Q` → click the pin to place the no-connect flag
+
+![](https://files.catbox.moe/3dtovm.png)
+
+> **Note:** In schematics, inputs are generally placed on the left and outputs on the right. This is a common convention that makes your schematic easier to read, since signal flow goes left to right just like reading a book. You don't have to follow this strictly, but it is good practice to keep things consistent!
+
 
 ### Assigning Footprints
 
@@ -170,9 +193,17 @@ This is my final schematic! Let's make the PCB now. First, let's assign parts. C
 
 ![](https://github.com/user-attachments/assets/7fdab501-5c92-4df0-b032-ab40fdc7018a)
 
+
 Then assign the corresponding EasyEDA / OPL parts! For the buttons, import from [here](https://www.lcsc.com/product-detail/C2888493.html)!
 
-![Footprint assignment](https://github.com/user-attachments/assets/cbc73d30-a61e-4a5a-912f-915604c71418)
+1. **Battery connector:** I use 2.54mm male headers, since 2.54mm is the standard pin spacing used on most hobby electronics and battery connectors.
+2. **Buzzer:** According to the [AliExpress listing](https://www.aliexpress.us/item/3256810135642750.html) I am ordering from, the buzzer is 12x9.5mm, where 12mm is the diameter and 9.5mm is the pin spacing. This fits the `Buzzer_12x9.5RM7.6` footprint. Note that the EasyEDA buzzer footprint uses a pin spacing of 7mm instead of 9.5mm, so make sure to use the correct one!
+3. **Buttons:** Imported from the link above.
+4. **XIAO:** I use a mix of SMD and DIP footprint from the [footprint library](https://files.seeedstudio.com/wiki/XIAO-KiCad-Library/New_XIAO_Series_Footprints.zip) linked earlier. I will later modify the footprint so the SMD pads are through-hole, allowing me to solder the XIAO directly by melting solder into the pads. The name of this footprint is `XIAO-ESP32-C3-DIP-SMD`.
+5. **OLED:** Imported from EasyEDA using the link from earlier.
+
+![Footprint assignment](https://files.catbox.moe/mfchm6.png)
+
 
 Now, press this and open the PCB viewer:
 
@@ -186,7 +217,7 @@ Now, press this and open the PCB viewer:
 
 You should see something like this:
 
-![PCB editor](https://github.com/user-attachments/assets/1cf53978-42d2-49b6-ab12-837e863fc6ed)
+![PCB editor](https://cdn.hackclub.com/019dae27-a243-7319-835c-ff4e05737e34/screenshot_2026-04-20_225259.png)
 
 To synchronize changes between your schematic and PCB layout in KiCad:
 
@@ -197,9 +228,24 @@ You can do this anytime you want to refresh the PCB with the latest schematic up
 
 ### Laying Out Components
 
-First, I laid my PCB out in a 100×100 box. I then laid out all my components:
+**First, I laid my PCB out in a 100×100 box.**
 
-![Component layout](https://cdn.hackclub.com/019c545b-804f-7cba-a7bb-06a9ee3376d9/image.png)
+Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
+
+- **M**: Move a component
+- **R**: Rotate a component
+- **F**: Flip a component to the other side of the board
+- **Ctrl+S** / **⌘+S**: Save (do this often!)
+
+What are ratlines?
+
+> Ratlines (also called "ratsnest lines") are the thin straight lines that show unrouted connections between pads. They indicate which pads need to be connected with copper traces. Your goal is to arrange components so these lines are as short as possible and don't cross each other, which makes routing much easier.
+
+Heres what I ended up with!
+
+![](https://files.catbox.moe/hww8o3.png)
+
+
 ## Button Footprint Mismatch
 
 > **Always verify your footprint before finalizing your PCB layout.** Even if a component looks correct in the schematic, the footprint may have incorrect pad numbering that causes your circuit to fail silently. A common red flag: any pin without a net almost always means something went wrong during import.
@@ -278,6 +324,26 @@ The footprint will refresh with the corrected pad numbering: one net on Side A, 
 
 ![](https://cdn.hackclub.com/019d6529-b11d-7d96-830f-c7431f1d8092/image.png)
 
+We do something similar to the XIAO footprint.
+
+![Xiao](https://files.catbox.moe/5e2aze.png)
+
+Double click each BAT pad, set it to through-hole (THT), and give it a drill diameter of 0.889mm.
+
+![Fixing Footprint](https://cdn.hackclub.com/019dae19-2ecf-7620-a4d3-4fd2b2442dec/recording_2026-04-20_232848.gif)
+
+You may also notice that similar to the buttons, the pin numbers are wrong according to the official Seeed diagram:
+
+![Footprints](https://files.seeedstudio.com/wiki/XIAO_WiFi/back-label-6.png)
+
+Fix the pin numbers to match. Keep in mind that the footprint is mirrored, so if it helps, temporarily move it to the back layer so it is orientated the same way as the diagram.
+
+Here is the final result:
+
+![Final result](https://user-cdn.hackclub-assets.com/019dae24-0e74-7c16-9f29-a181bbd5ce82/image.png)
+
+Save and update your PCB from schematic when done!
+
 ### Defining the Board Outline
 
 You'll notice a white outline surrounding the entire board. This is the **Edge Cuts** layer, which defines the physical boundary where the PCB will be cut.
@@ -307,35 +373,16 @@ You can also use the kicad tools on the right to draw a barrier, they work well!
 
 A PCB is made up of multiple layers. Our boards are "two-layer," meaning that they have two layers of copper wire.
 
-<details>
-<summary>What are the PCB layers?</summary>
+What are the PCB layers?
 
-| Layer | Description |
-|-------|-------------|
-| **Top & bottom silkscreen** | The white ink layer where you can add art |
-| **Top & bottom copper** | The layers where you make your copper wires |
-| **Substrate** | The actual plastic (usually green) which makes up your board |
-| **Via** | The tunnels which connect the top and bottom copper layers |
-
-![PCB layers](https://cdn.hackclub.com/019c545f-32f8-71b8-9b46-079aee118944/c2ec73f247fdb1f466903fc86d345fe0f4b47b6f_image.webp)
-
-</details>
-
-### Placing Components
-
-Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
-
-- **M**: Move a component
-- **R**: Rotate a component
-- **F**: Flip a component to the other side of the board
-- **Ctrl+S** / **⌘+S**: Save (do this often!)
-
-<details>
-<summary>What are ratlines?</summary>
-
-Ratlines (also called "ratsnest lines") are the thin straight lines that show unrouted connections between pads. They indicate which pads need to be connected with copper traces. Your goal is to arrange components so these lines are as short as possible and don't cross each other, which makes routing much easier.
-
-</details>
+> | Layer | Description |
+> |-------|-------------|
+> | **Top & bottom silkscreen** | The white ink layer where you can add art |
+> | **Top & bottom copper** | The layers where you make your copper wires |
+> | **Substrate** | The actual plastic (usually green) which makes up your board |
+> | **Via** | The tunnels which connect the top and bottom copper layers |
+>
+> ![PCB layers](https://cdn.hackclub.com/019c545f-32f8-71b8-9b46-079aee118944/c2ec73f247fdb1f466903fc86d345fe0f4b47b6f_image.webp)
 
 ### Routing Traces
 
@@ -356,12 +403,9 @@ Join the highlighted points together. If there isn't enough space on the front s
 
 > **Important:** Wires and pads of different colors (except golden) can't be connected together directly! You must use a via to the other side.
 
-<details>
-<summary>What is a via?</summary>
+What is a via?
 
-A via is a small plated hole that connects a copper trace on one layer of the board to a trace on another layer. Think of it as a tiny tunnel through the PCB. You use them when you can't route a trace on one side because another trace is in the way. Press **V** while routing to drop a via and continue the trace on the other side.
-
-</details>
+> A via is a small plated hole that connects a copper trace on one layer of the board to a trace on another layer. Think of it as a tiny tunnel through the PCB. You use them when you can't route a trace on one side because another trace is in the way. Press **V** while routing to drop a via and continue the trace on the other side.
 
 Your routing is complete!
 
@@ -401,18 +445,15 @@ Your board is now beautiful!
 
 Using the output, correct any errors. This can be confusing, so remember: you can always ask for help!
 
-<details>
-<summary>What are common DRC errors?</summary>
+What are common DRC errors?
 
-- **Track and copper errors** : clearance violations, track width, annular rings
-- **Via errors** : diameter, micro vias, blind/buried vias
-- **Pad and footprint errors** : pad-to-pad, hole clearances
-- **Edge and board outline errors** : copper edge clearance, silkscreen issues
-- **Zone errors** : copper slivers, starved thermals, unconnected items
-- **Net and connection errors** : missing connections, net conflicts
-- **Courtyard errors** : overlaps, missing courtyards
-
-</details>
+> - **Track and copper errors** : clearance violations, track width, annular rings
+> - **Via errors** : diameter, micro vias, blind/buried vias
+> - **Pad and footprint errors** : pad-to-pad, hole clearances
+> - **Edge and board outline errors** : copper edge clearance, silkscreen issues
+> - **Zone errors** : copper slivers, starved thermals, unconnected items
+> - **Net and connection errors** : missing connections, net conflicts
+> - **Courtyard errors** : overlaps, missing courtyards
 
 Once your PCB passes the DRC, it is finished!
 
@@ -453,19 +494,16 @@ Now it is time to order your board. Get the following files from your project:
 - `.kicad_pcb` (PCB layout)
 - **Your Gerber files** (see below)
 
-<details>
-<summary>How do I export Gerber files?</summary>
+How do I export Gerber files?
 
-1. In your PCB editor: **File → Fabrication Outputs → Gerbers (.gbr)**
-2. Set an output folder (e.g., a new "Gerbers" folder)
-3. Select necessary layers (generally already selected)
-4. Click **Plot**
-5. Click **Generate Drill Files**
-6. Zip the resulting files for your manufacturer
-
-Gerber files are the industry-standard format that PCB manufacturers use to fabricate your board. They contain the copper layers, silkscreen, solder mask, drill locations, and board outline.
-
-</details>
+> 1. In your PCB editor: **File → Fabrication Outputs → Gerbers (.gbr)**
+> 2. Set an output folder (e.g., a new "Gerbers" folder)
+> 3. Select necessary layers (generally already selected)
+> 4. Click **Plot**
+> 5. Click **Generate Drill Files**
+> 6. Zip the resulting files for your manufacturer
+>
+> Gerber files are the industry-standard format that PCB manufacturers use to fabricate your board. They contain the copper layers, silkscreen, solder mask, drill locations, and board outline.
 
 ---
 
@@ -517,7 +555,7 @@ You should keep the default settings for everything. The only thing you should/c
 
 ![PCB color](https://cdn.hackclub.com/019d69c3-8a8d-72bd-b620-ac8daa1d780e/image.png)
 
-For high-spec options, also keep the default. **Do not** click PCB assembly. We will give you a kit to hand-solder your board.
+For high-spec options, also keep the default. **Do not** click PCB assembly! 
 
 ![High-spec options](https://cdn.hackclub.com/019c5535-28a4-787e-8bf4-ba4fcbce1653/053061912ca84c66c46323ccef5b12cb71c7d721_image.webp)
 
@@ -594,6 +632,3 @@ I also recommend checking my [Onshape](https://cad.onshape.com/documents/fa5791d
 > You've got the whole Fallout community to ask for help :D
 
 Enjoy making :D!
-
-
-
