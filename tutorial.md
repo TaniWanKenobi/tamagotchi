@@ -6,32 +6,39 @@
 
 ## Table of Contents
 
-- [Tamagotchi PCB Tutorial](#tamagotchi-pcb-tutorial)
-  - [Table of Contents](#table-of-contents)
-  - [Installing KiCad](#installing-kicad)
-  - [Creating the Schematic](#creating-the-schematic)
-    - [Importing the MCU](#importing-the-mcu)
-    - [Adding the OLED Display](#adding-the-oled-display)
-    - [Adding Buttons](#adding-buttons)
-    - [Adding a Buzzer](#adding-a-buzzer)
-    - [Assigning Footprints](#assigning-footprints)
-  - [Creating the PCB](#creating-the-pcb)
-    - [Laying Out Components](#laying-out-components)
-    - [Button Footprint Mismatch](#button-footprint-mismatch)
-    - [Defining the Board Outline](#defining-the-board-outline)
-  - [PCB Routing](#pcb-routing)
-    - [Placing Components](#placing-components)
-    - [Routing Traces](#routing-traces)
-  - [Customization](#customization)
-  - [Run Design Rules Check](#run-design-rules-check)
-    - [Common DRC Errors](#common-drc-errors)
-    - [Late Additions](#late-additions)
-  - [Add Your Files to Your GitHub Repo](#add-your-files-to-your-github-repo)
-  - [Upload Your Files to GitHub](#upload-your-files-to-github)
-    - [Edit Your README](#edit-your-readme)
-  - [Getting a JLCPCB Price](#getting-a-jlcpcb-price)
-    - [Settings](#settings)
-  - [Designing the Case](#designing-the-case)
+- [Installing KiCad](#installing-kicad)
+
+### 1. Schematic Design
+- [Creating the Schematic](#creating-the-schematic)
+  - [Importing the MCU](#importing-the-mcu)
+  - [Adding the OLED Display](#adding-the-oled-display)
+  - [Adding Buttons](#adding-buttons)
+  - [Adding a Buzzer](#adding-a-buzzer)
+  - [Power & Battery Setup](#power--battery-setup)
+  - [Assigning Footprints](#assigning-footprints)
+
+### 2. PCB Design
+- [Creating the PCB](#creating-the-pcb)
+  - [Defining the Board Outline](#defining-the-board-outline)
+  - [Component Placement](#component-placement)
+- [Button Footprint Mismatch](#button-footprint-mismatch)
+- [PCB Routing](#pcb-routing)
+  - [Routing Traces](#routing-traces)
+- [Customization](#customization)
+- [Run Design Rules Check](#run-design-rules-check)
+  - [Common DRC Errors](#common-drc-errors)
+
+### 7. Files & Version Control
+- [Add Your Files to Your GitHub Repo](#add-your-files-to-your-github-repo)
+- [Upload Your Files to GitHub](#upload-your-files-to-github)
+  - [Edit Your README](#edit-your-readme)
+
+### 8. Fabrication
+- [Getting a JLCPCB Price](#getting-a-jlcpcb-price)
+  - [Settings](#settings)
+
+### 9. Enclosure Design
+- [Designing the Case](#designing-the-case)
 
 ---
 
@@ -44,7 +51,6 @@ Download KiCad from the official site: **[https://www.kicad.org/download/](https
 3. Run the installer and follow the on-screen instructions (the defaults are fine).
 4. When prompted, make sure to **install the default libraries** (they're selected by default).
 5. Launch KiCad and create a new project (**File → New Project** or **Ctrl+N**).
-
 
 What are the default libraries?
 
@@ -90,14 +96,11 @@ I downloaded from this:
 
 ![](https://cdn.hackclub.com/019d848c-2e6a-7afd-ab8b-fc6f28d32ac7/image.png)
 
-
-
 I then clicked **A** (Add Symbol), searched for the part, and imported it. I ended up with this:
 
 ![Xiao](https://cdn.hackclub.com/019d985d-8af2-746a-901e-c897ece4b3fa/image.png)
 
 Most symbols won't label every pin with its function (SDA, SCL, MOSI, etc.) They'll just show pin numbers. When that happens, google the MCU name + "pinout" to find the official diagram and cross-reference which pin number maps to which function :D 
-
 
 **Now, for this tutorial, I will create the base Tamagotchi. Spice your own Tamagotchi up more than this one! Add some flavor!**
 
@@ -108,7 +111,6 @@ I then connect GND to GND, 5V to +5V, 3V3 to  and BAT to + as shown below:
 **Why didn't I connect the top pads?**
 
 ![](https://files.catbox.moe/ozimcj.png)
-
 
 I didn't connect them because I don't need JTAG debugging for this project. A JTAG debug cable is a special cable that connects your computer to these pads, letting you pause your program mid-run and inspect exactly what's happening inside the chip line by line. USB-C handles everything we need here.
 
@@ -140,13 +142,11 @@ I therefore connected it as such
 
 ![](https://files.catbox.moe/34nu2g.png)
 
-
 ### Adding Buttons
 
 Since a Tamagotchi has three buttons, I decided to add those as well!
 
 For this, I decided to use an **active‑low** button layout (which is the most common approach).
-
 
 What does "active-low" mean?
 
@@ -160,8 +160,6 @@ What is a GPIO pin?
 
 > GPIO stands for **General Purpose Input/Output**. These are the programmable pins on your microcontroller that can be configured as either inputs (to read sensors/buttons) or outputs (to drive LEDs/buzzers). On the XIAO, pins like D0–D10 are GPIOs.
 
-
-
 ### Adding a Buzzer
 
 I also added a buzzer from [here](https://www.lcsc.com/product-detail/C49246964.html)!
@@ -169,6 +167,8 @@ I also added a buzzer from [here](https://www.lcsc.com/product-detail/C49246964.
 The buzzer is wired with one pin to a GPIO output and the other to GND, letting the GPIO drive it with a square‑wave tone.
 
 ![](https://files.catbox.moe/4ksaud.png)
+
+### Power & Battery Setup
 
 I then added the battery.
 
@@ -186,13 +186,11 @@ Press `Q` → click the pin to place the no-connect flag
 
 > **Note:** In schematics, inputs are generally placed on the left and outputs on the right. This is a common convention that makes your schematic easier to read, since signal flow goes left to right just like reading a book. You don't have to follow this strictly, but it is good practice to keep things consistent!
 
-
 ### Assigning Footprints
 
 This is my final schematic! Let's make the PCB now. First, let's assign parts. Click this:
 
 ![](https://github.com/user-attachments/assets/7fdab501-5c92-4df0-b032-ab40fdc7018a)
-
 
 Then assign the corresponding EasyEDA / OPL parts! For the buttons, import from [here](https://www.lcsc.com/product-detail/C2888493.html)!
 
@@ -203,7 +201,6 @@ Then assign the corresponding EasyEDA / OPL parts! For the buttons, import from 
 5. **OLED:** Imported from EasyEDA using the link from earlier.
 
 ![Footprint assignment](https://files.catbox.moe/mfchm6.png)
-
 
 Now, press this and open the PCB viewer:
 
@@ -226,16 +223,54 @@ To synchronize changes between your schematic and PCB layout in KiCad:
 
 You can do this anytime you want to refresh the PCB with the latest schematic updates.
 
-
 What are those two circles?
 > Those are M3 mounting holes! Click A to add them!
 
+### Defining the Board Outline
+
+You'll notice a white outline surrounding the entire board. This is the **Edge Cuts** layer, which defines the physical boundary where the PCB will be cut.
+
+This is done by modifying the `Edge.Cuts` layer on the right side. There are many ways to do this, such as manually drawing it with the given menu.
+
+I found the default outline options limiting and wanted to create something more complex. To do this, I:
+
+1. Drew out the edge cuts layer. I just did this on figma, you can do this anywhere!!!
+2. Converted the image into a DXF file using an image-to-DXF converter.
+3. Imported the DXF file into KiCad.
+4. Created a 100×100 mm box as a reference.
+5. Used the measuring tool to determine the correct scale.
+6. Scaled the outline down so it fit within 100 mm.
+
+![cutout](https://cdn.hackclub.com/019d6fcf-c1dc-7c1b-be3c-a8aac74ded7a/image.png)
+
+You can also use the kicad tools on the right to draw a barrier, they work well! I just wanted to make a cool and unique border. You should try it!
+
+![](https://cdn.hackclub.com/019d6fd1-62ad-753b-81ce-07980f6496e3/image.png)
+
+### Component Placement
+
+**First, I laid my PCB out in a 100×100 box.**
+
+Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
+
+- **M**: Move a component
+- **R**: Rotate a component
+- **F**: Flip a component to the other side of the board
+- **Ctrl+S** / **⌘+S**: Save (do this often!)
+
+What are ratlines?
+
+> Ratlines (also called "ratsnest lines") are the thin straight lines that show unrouted connections between pads. They indicate which pads need to be connected with copper traces. Your goal is to arrange components so these lines are as short as possible and don't cross each other, which makes routing much easier.
+
+Heres what I ended up with!
+
+![](https://files.catbox.moe/hww8o3.png)
+
+---
 
 ## Button Footprint Mismatch
 
 > **Always verify your footprint before finalizing your PCB layout.** Even if a component looks correct in the schematic, the footprint may have incorrect pad numbering that causes your circuit to fail silently. A common red flag: any pin without a net almost always means something went wrong during import.
-
----
 
 ### Why This Happens
 
@@ -260,8 +295,6 @@ When imported, EasyEDA's pins 1 and 2 map to opposite footprint pads, but on a t
 
 The switch connects **Side A to Side B** when pressed. The footprint must reflect this.
 
----
-
 ### Confirming with the Datasheet
 
 Verify the pinout using the component's datasheet. If sourcing from LCSC, the datasheet is available directly on the product page. For example:
@@ -273,8 +306,6 @@ Verify the pinout using the component's datasheet. If sourcing from LCSC, the da
 ![Internal schematic](https://cdn.hackclub.com/019d64f2-5c5b-7c82-8d01-eba0fbff8d62/image.png)
 
 These confirm that **pads 1 and 2 are shorted** (Side A) and **pads 3 and 4 are shorted** (Side B).
-
----
 
 ### Fixing the Pad Numbering
 
@@ -292,8 +323,6 @@ Renumber the footprint pads to match the correct mapping:
 ![Corrected pad numbering](https://cdn.hackclub.com/019d64f7-c4ab-78f2-adc6-450d63ee774e/image.png)
 
 3. Press `Ctrl+S` to save.
-
----
 
 ### Applying the Fix
 
@@ -328,47 +357,6 @@ Here is the final result:
 ![Final result](https://user-cdn.hackclub-assets.com/019dae24-0e74-7c16-9f29-a181bbd5ce82/image.png)
 
 Save and update your PCB from schematic when done!
-
-### Defining the Board Outline
-
-You'll notice a white outline surrounding the entire board. This is the **Edge Cuts** layer, which defines the physical boundary where the PCB will be cut.
-
-This is done by modifying the `Edge.Cuts` layer on the right side. There are many ways to do this, such as manually drawing it with the given menu.
-
-I found the default outline options limiting and wanted to create something more complex. To do this, I:
-
-1. Drew out the edge cuts layer. I just did this on figma, you can do this anywhere!!!
-2. Converted the image into a DXF file using an image-to-DXF converter.
-3. Imported the DXF file into KiCad.
-4. Created a 100×100 mm box as a reference.
-5. Used the measuring tool to determine the correct scale.
-6. Scaled the outline down so it fit within 100 mm.
-
-![cutout](https://cdn.hackclub.com/019d6fcf-c1dc-7c1b-be3c-a8aac74ded7a/image.png)
-
-You can also use the kicad tools on the right to draw a barrier, they work well! I just wanted to make a cool and unique border. You should try it!
-
-![](https://cdn.hackclub.com/019d6fd1-62ad-753b-81ce-07980f6496e3/image.png)
-
-### Laying Out Components
-
-**First, I laid my PCB out in a 100×100 box.**
-
-Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
-
-- **M**: Move a component
-- **R**: Rotate a component
-- **F**: Flip a component to the other side of the board
-- **Ctrl+S** / **⌘+S**: Save (do this often!)
-
-What are ratlines?
-
-> Ratlines (also called "ratsnest lines") are the thin straight lines that show unrouted connections between pads. They indicate which pads need to be connected with copper traces. Your goal is to arrange components so these lines are as short as possible and don't cross each other, which makes routing much easier.
-
-Heres what I ended up with!
-
-![](https://files.catbox.moe/hww8o3.png)
-
 
 ---
 
@@ -463,6 +451,7 @@ In the PCB editor, click **View → 3D Viewer** to see your finished work!
 ![3D Viewer](https://cdn.hackclub.com/019db09a-41c2-7fad-9dfe-1083224eca73/image.png)
 
 > ![Final](https://cdn.hackclub.com/019db096-d966-7e5a-9882-bcdcac8dcf61/image.png)
+
 ---
 
 ## Add Your Files to Your GitHub Repo
