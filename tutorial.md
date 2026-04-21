@@ -245,6 +245,9 @@ Heres what I ended up with!
 
 ![](https://files.catbox.moe/hww8o3.png)
 
+What are those two circles?
+> Those are M3 mounting holes! Click A to add them!
+
 
 ## Button Footprint Mismatch
 
@@ -409,17 +412,17 @@ What is a via?
 
 Your routing is complete!
 
-
-
-![Ground plane](https://cdn.hackclub.com/019c5461-63bf-785e-915e-34c92be3fb2b/image.png)
+![Ground plane](https://cdn.hackclub.com/019dafaa-d994-786e-ba6d-d783085a964c/screenshot_2026-04-21_061717.png)
 
 > **Tip:** Place everything based on what shortens the blue lines, and what makes them not cross!
 
 > **Tip:** Use a [ground plane](https://www.kicadtips.com/how-to/make-a-ground-plane) to help with routing and to reduce noise. That's what the red and blue layers are for! It's not necessary, but looks nice and is easy to set up!
 
-> **Note:** You may notice [stitching vias](https://resources.altium.com/p/everything-you-need-know-about-stitching-vias) in my board (the small holes scattered across the ground plane). **You do NOT need to add these.** They are completely optional and unnecessary for a board like this. I only added them for fun.
+> **Note:** You may notice [stitching vias](https://resources.altium.com/p/everything-you-need-know-about-stitching-vias) in my board (the small holes scattered across the ground plane). **You do NOT need to add these.** They are completely optional for a board like this!
 >
 > ![Stitching vias](https://cdn.hackclub.com/019c546b-8acc-7d6c-9c2b-b1a579d315ef/image.png)
+
+^^^^ REPLACE THE IMAGE 
 
 ---
 
@@ -461,26 +464,9 @@ In the PCB editor, click **View → 3D Viewer** to see your finished work!
 
 ![3D Viewer](https://cdn.hackclub.com/019c5472-6d23-70be-b813-a9eb320bb4e3/image.png)
 
-### Late Additions
-
-There will be moments when you realize you want to add something after you've done most of the work. That's totally fine!
-
-Here, I decided to add battery functionality. Since the XIAO's underside pins are extremely difficult to solder, I designed the board so those pins connect to a pad instead. The battery can then plug into a set of male pins that interface with that pad. Here's what it looks like:
-
-![Battery schematic](https://cdn.hackclub.com/019c5518-d617-7c27-b74c-7047a566dc60/image.png)
-
-Here's my final schematic:
-
-![Final Schematic](https://cdn.hackclub.com/019c551a-0c44-74de-b335-e5125c46b190/image.png)
-
 Here's my final PCB:
 
-![PCB](https://cdn.hackclub.com/019c5520-3b13-777e-a4fe-af7fee4a87db/image.png)
-
-![3D Model Front](https://cdn.hackclub.com/019c5521-3bb5-7571-b746-06b7ccf2c9c5/image.png)
-
-![3D Model Back](https://cdn.hackclub.com/019c5521-e2f7-7c83-8f44-04fc46b14a6a/image.png)
-
+~INSERT IMAGES HERE>>>>>>>>> REPLACE
 ---
 
 ## Add Your Files to Your GitHub Repo
