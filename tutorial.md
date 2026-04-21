@@ -226,24 +226,6 @@ To synchronize changes between your schematic and PCB layout in KiCad:
 
 You can do this anytime you want to refresh the PCB with the latest schematic updates.
 
-### Laying Out Components
-
-**First, I laid my PCB out in a 100×100 box.**
-
-Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
-
-- **M**: Move a component
-- **R**: Rotate a component
-- **F**: Flip a component to the other side of the board
-- **Ctrl+S** / **⌘+S**: Save (do this often!)
-
-What are ratlines?
-
-> Ratlines (also called "ratsnest lines") are the thin straight lines that show unrouted connections between pads. They indicate which pads need to be connected with copper traces. Your goal is to arrange components so these lines are as short as possible and don't cross each other, which makes routing much easier.
-
-Heres what I ended up with!
-
-![](https://files.catbox.moe/hww8o3.png)
 
 What are those two circles?
 > Those are M3 mounting holes! Click A to add them!
@@ -368,6 +350,24 @@ You can also use the kicad tools on the right to draw a barrier, they work well!
 
 ![](https://cdn.hackclub.com/019d6fd1-62ad-753b-81ce-07980f6496e3/image.png)
 
+### Laying Out Components
+
+**First, I laid my PCB out in a 100×100 box.**
+
+Place all of your components inside the board outline. Move components to shorten **ratlines**, which are the straight blue lines.
+
+- **M**: Move a component
+- **R**: Rotate a component
+- **F**: Flip a component to the other side of the board
+- **Ctrl+S** / **⌘+S**: Save (do this often!)
+
+What are ratlines?
+
+> Ratlines (also called "ratsnest lines") are the thin straight lines that show unrouted connections between pads. They indicate which pads need to be connected with copper traces. Your goal is to arrange components so these lines are as short as possible and don't cross each other, which makes routing much easier.
+
+Heres what I ended up with!
+
+![](https://files.catbox.moe/hww8o3.png)
 
 
 ---
@@ -420,9 +420,7 @@ Your routing is complete!
 
 > **Note:** You may notice [stitching vias](https://resources.altium.com/p/everything-you-need-know-about-stitching-vias) in my board (the small holes scattered across the ground plane). **You do NOT need to add these.** They are completely optional for a board like this!
 >
-> ![Stitching vias](https://cdn.hackclub.com/019c546b-8acc-7d6c-9c2b-b1a579d315ef/image.png)
-
-^^^^ REPLACE THE IMAGE 
+> ![Stitching vias](https://cdn.hackclub.com/019db096-d966-7e5a-9882-bcdcac8dcf61/image.png)
 
 ---
 
@@ -462,11 +460,9 @@ Once your PCB passes the DRC, it is finished!
 
 In the PCB editor, click **View → 3D Viewer** to see your finished work!
 
-![3D Viewer](https://cdn.hackclub.com/019c5472-6d23-70be-b813-a9eb320bb4e3/image.png)
+![3D Viewer](https://cdn.hackclub.com/019db09a-41c2-7fad-9dfe-1083224eca73/image.png)
 
-Here's my final PCB:
-
-~INSERT IMAGES HERE>>>>>>>>> REPLACE
+> ![Final](https://cdn.hackclub.com/019db096-d966-7e5a-9882-bcdcac8dcf61/image.png)
 ---
 
 ## Add Your Files to Your GitHub Repo
