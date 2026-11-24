@@ -190,7 +190,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BTN_LEFT   D0
 #define BTN_MIDDLE D1
 #define BTN_RIGHT  D2
-#define BUZZER_PIN D3
+#define BUZZER_PIN D10
 ```
 
 **Notes:**
@@ -206,7 +206,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 <details>
 <summary>What if my buttons are on different pins?</summary>
 
-Check your KiCad schematic to see which GPIO pins your buttons are wired to. Then change `D0`, `D1`, `D2`, and `D3` to match. For example, if your left button is on pin D5, change the line to `#define BTN_LEFT D5`.
+Check your KiCad schematic to see which GPIO pins your buttons are wired to. Then change `D0`, `D1`, `D2`, and `D10` to match. For example, if your left button is on pin D5, change the line to `#define BTN_LEFT D5`.
 
 </details>
 

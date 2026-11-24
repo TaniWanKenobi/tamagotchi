@@ -13,7 +13,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BTN_RIGHT  D0  // SW1 → GPIO0
 #define BTN_MIDDLE D1  // SW2 → GPIO1
 #define BTN_LEFT   D2  // SW3 → GPIO2
-#define BUZZER_PIN D3  // BUZZER1 → GPIO20 (via Pin 10, active-low sink)
+#define BUZZER_PIN D10 // BUZZER1 → GPIO18 (XIAO pin 11); other buzzer leg goes to GND
 
 // --- Pet model ---
 struct Pet {
